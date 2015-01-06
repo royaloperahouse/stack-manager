@@ -15,6 +15,7 @@ use InvalidArgumentException;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
+use RuntimeException;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
@@ -105,6 +106,12 @@ class StackConfigMapper
                 'rootStackName' => $name,
             ]
         ));
+        if ($body === null && json_last_error()) {
+            throw new RuntimeException(sprintf(
+                'Template body could not be decoded as JSON, error: %s',
+                json_last_error_msg()
+            ));
+        }
 
         $stack = new Stack(
             $name,

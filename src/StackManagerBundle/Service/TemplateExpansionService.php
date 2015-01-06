@@ -43,11 +43,10 @@ class TemplateExpansionService
     public function getExpandedTemplateBody($body)
     {
         $body = json_decode($body);
-        if ($body === false) {
+        if ($body === null && json_last_error()) {
             throw new RuntimeException(sprintf(
                 'Template body could not be decoded as JSON, error: %s',
-                $url,
-                json_last_error()
+                json_last_error_msg()
             ));
         }
 
@@ -112,11 +111,11 @@ class TemplateExpansionService
         }
 
         $template = json_decode($json);
-        if ($template === false) {
+        if ($template === null && json_last_error()) {
             throw new RuntimeException(sprintf(
                 'Template "%s" could not be decoded as JSON, error: %s',
                 $url,
-                json_last_error()
+                json_last_error_msg()
             ));
         }
 
