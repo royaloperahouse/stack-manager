@@ -76,7 +76,7 @@ services:
         class: ROH\Bundle\StackManagerBundle\Service\TemplateSquashingService
         arguments:
             - @platinum_pixs_aws.base
-            - 'stacks.website.roh.org.uk'
+            - %aws_template_bucket%
 
     roh_stack_manager.service.template_expansion:
         class: ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService
