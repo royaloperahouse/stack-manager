@@ -85,3 +85,10 @@ services:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\CidrTwigExtension
         tags:
             - { name: twig.extension }
+
+    roh_stack_manager.twig.rds:
+        class:  ROH\Bundle\StackManagerBundle\TwigExtension\RdsTwigExtension
+        arguments:
+            - @platinum_pixs_aws.base
+        tags:
+            - { name: twig.extension }
