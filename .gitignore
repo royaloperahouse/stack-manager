@@ -1,0 +1,8 @@
+app/cache/*
+app/config/parameters.ini
+app/logs/*
+app/bootstrap.php.cache
+app/check.php
+app/SymfonyRequirements.php
+bin/*
+vendor/

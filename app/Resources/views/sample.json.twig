@@ -1,0 +1,105 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+
+    "Description" : "Sample Template: Create a sub-stack that starts a single EC2 instance",
+
+    "Parameters" : {
+        "AvailabilityZone" : {
+            "Description" : "Availability zone to place the instance in",
+            "Type" : "String"
+        },
+
+        "KeyName" : {
+            "Description" : "Name of the key pair to use for the instance",
+            "Type" : "String"
+        },
+
+        "InstanceType" : {
+            "Description" : "Instance type to use for the instance",
+            "Type" : "String"
+        },
+
+
+        "ImageId" : {
+            "Description" : "Id of AMI to use to start the instance",
+            "Type" : "String"
+        }
+    },
+
+    "Resources" : {
+        "ChildStack" : {
+            "Type" : "AWS::CloudFormation::Stack",
+            "Properties" : {
+                "Parameters" : {
+                    "AvailabilityZone" : { "Ref" : "AvailabilityZone" },
+                    "KeyName" : { "Ref" : "KeyName" },
+                    "InstanceType" : { "Ref" : "InstanceType" },
+                    "ImageId" : { "Ref" : "ImageId" }
+                },
+                "TemplateBody" : {
+                    "AWSTemplateFormatVersion" : "2010-09-09",
+                
+                    "Description" : "Sample Sub-stack Template: Create a single EC2 instance",
+                
+                    "Parameters" : {
+                        "AvailabilityZone" : {
+                            "Description" : "Availability zone to place the instance in",
+                            "Type" : "String"
+                        },
+
+                        "KeyName" : {
+                            "Description" : "Name of the key pair to use for the instance",
+                            "Type" : "String"
+                        },
+                
+                        "InstanceType" : {
+                            "Description" : "Instance type to use for the instance",
+                            "Type" : "String"
+                        },
+                
+                
+                        "ImageId" : {
+                            "Description" : "Id of AMI to use to start the instance",
+                            "Type" : "String"
+                        }
+                    },
+                
+                    "Resources" : {
+                        "SecurityGroup" : {
+                           "Type" : "AWS::EC2::SecurityGroup",
+                           "Properties" : {
+                                "GroupDescription" : "Security group for the Sample instance",
+                                "SecurityGroupEgress" : [],
+                                "SecurityGroupIngress" : [],
+                                "Tags" : [
+                                    {
+                                        "Key" : "Name",
+                                        "Value" : "Sample Security Group"
+                                    }
+                                ]
+                            }
+                        },
+
+                        "Instance" : {
+                            "Type" : "AWS::EC2::Instance",
+                            "Properties" : {
+                                "AvailabilityZone" : { "Ref" : "AvailabilityZone" },
+                                "ImageId" : { "Ref" : "ImageId" },
+                                "InstanceType" : { "Ref" : "InstanceType" },
+                                "KeyName" : { "Ref" : "KeyName" },
+                                "Monitoring": "true",
+                                "SecurityGroupIds" : [ { "Ref" : "SecurityGroup" } ],
+                                "Tags" : [
+                                    {
+                                        "Key" : "Name",
+                                        "Value" : "Sample Instance"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

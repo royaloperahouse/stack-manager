@@ -1,0 +1,126 @@
+{% macro instance_type(description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedValues" : [
+            "t2.micro",
+            "t2.small",
+            "t2.medium",
+            "m3.medium",
+            "m3.large",
+            "m3.xlarge",
+            "m3.2xlarge",
+            "c3.large",
+            "c3.xlarge",
+            "c3.2xlarge",
+            "c3.4xlarge",
+            "c3.8xlarge",
+            "g2.2xlarge",
+            "r3.large",
+            "r3.xlarge",
+            "r3.2xlarge",
+            "r3.4xlarge",
+            "r3.8xlarge",
+            "i2.xlarge",
+            "i2.2xlarge",
+            "i2.4xlarge",
+            "i2.8xlarge",
+            "hs1.8xlarge",
+            "t1.micro",
+            "m1.small",
+            "m1.medium",
+            "m1.large",
+            "c1.medium"
+        ],
+        "ConstraintDescription" : "must be a valid EC2 instance type"
+    }
+{% endmacro %}
+
+{% macro cidrblock(description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedPattern" : "([12]?\\d?\\d\\.){3}[12]?\\d?\\d/\\d{2}",
+        "ConstraintDescription" : "must be in the format 'nnn.nnn.nnn.nnn/nn'"
+    }
+{% endmacro %}
+
+{% macro rds_instance_type(description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedValues" : [
+            "db.t2.micro",
+            "db.t2.small",
+            "db.t2.medium",
+            "db.m3.medium",
+            "db.m3.large",
+            "db.m3.xlarge",
+            "db.m3.2xlarge",
+            "db.r3.large",
+            "db.r3.xlarge",
+            "db.r3.2xlarge",
+            "db.r3.4xlarge",
+            "db.r3.8xlarge",
+            "db.m2.xlarge",
+            "db.m2.2xlarge",
+            "db.m2.4xlarge",
+            "db.cr1.8xlarge",
+            "db.m1.medium",
+            "db.m1.large",
+            "db.m1.xlarge",
+            "db.t1.micro",
+            "db.m1.small"
+        ],
+        "ConstraintDescription" : "Must be a valid RDS instance class"
+    }
+{% endmacro %}
+
+{% macro cache_instance_type(description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedValues" : [
+            "cache.t2.micro",
+            "cache.t2.small",
+            "cache.t2.medium",
+            "cache.m3.medium",
+            "cache.m3.large",
+            "cache.m3.xlarge",
+            "cache.m3.2xlarge",
+            "cache.r3.large",
+            "cache.r3.xlarge",
+            "cache.r3.2xlarge",
+            "cache.r3.4xlarge",
+            "cache.r3.8xlarge"
+        ],
+        "ConstraintDescription" : "Must be a valid cache instance class"
+    }
+{% endmacro %}
+
+{% macro cidrblock(description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedPattern" : "([12]?\\d?\\d\\.){3}[12]?\\d?\\d/\\d{2}",
+        "ConstraintDescription" : "Must be in the format 'nnn.nnn.nnn.nnn/nn'"
+    }
+{% endmacro %}
+
+{% macro resource(type, description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedPattern" : "{{ type }}-[0-9a-f]{8}",
+        "ConstraintDescription" : "Must be in the format '{{ type }}-xxxxxxxx'"
+    }
+{% endmacro %}
+
+{% macro hostedzone(type, description) %}
+    {
+        "Description" : "{{ description }}",
+        "Type" : "String",
+        "AllowedPattern" : "Z[0-9A-Z]{13}",
+        "ConstraintDescription" : "Must be in the format 'Zxxxxxxxxxxxxx'"
+    }
+{% endmacro %}

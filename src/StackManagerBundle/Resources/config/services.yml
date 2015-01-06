@@ -1,0 +1,87 @@
+services:
+    roh_stack_manager.command.preview_stack:
+        class: ROH\Bundle\StackManagerBundle\Command\PreviewStackCommand
+        arguments:
+            - @roh_stack_manager.mapper.stack_config
+        tags:
+            - { name: console.command }
+
+    roh_stack_manager.command.create_stack:
+        class: ROH\Bundle\StackManagerBundle\Command\CreateStackCommand
+        arguments:
+            - @roh_stack_manager.mapper.stack_config
+            - @roh_stack_manager.service.stack_manager
+        tags:
+            - { name: console.command }
+
+    roh_stack_manager.command.compare_stack:
+        class: ROH\Bundle\StackManagerBundle\Command\CompareStackCommand
+        arguments:
+            - @roh_stack_manager.mapper.stack_api
+            - @roh_stack_manager.mapper.stack_config
+            - @roh_stack_manager.service.stack_comparison
+        tags:
+            - { name: console.command }
+
+    roh_stack_manager.command.update_stack:
+        class: ROH\Bundle\StackManagerBundle\Command\UpdateStackCommand
+        arguments:
+            - @roh_stack_manager.mapper.stack_api
+            - @roh_stack_manager.mapper.stack_config
+            - @roh_stack_manager.service.stack_manager
+        tags:
+            - { name: console.command }
+
+    roh_stack_manager.command.delete_stack:
+        class: ROH\Bundle\StackManagerBundle\Command\DeleteStackCommand
+        arguments:
+            - @roh_stack_manager.mapper.stack_api
+            - @roh_stack_manager.service.stack_manager
+        tags:
+            - { name: console.command }
+
+    roh_stack_manager.command.list_templates:
+        class: ROH\Bundle\StackManagerBundle\Command\ListTemplatesCommand
+        arguments:
+            - %roh_stack_manager.defaults%
+            - %roh_stack_manager.environments%
+            - %roh_stack_manager.scaling_profiles%
+        tags:
+            - { name: console.command }
+
+    roh_stack_manager.mapper.stack_api:
+        class: ROH\Bundle\StackManagerBundle\Mapper\StackApiMapper
+        arguments:
+            - @roh_stack_manager.service.template_expansion
+            - @platinum_pixs_aws.base
+
+    roh_stack_manager.mapper.stack_config:
+        class: ROH\Bundle\StackManagerBundle\Mapper\StackConfigMapper
+        arguments:
+            - @templating
+            - %roh_stack_manager.defaults%
+            - %roh_stack_manager.environments%
+            - %roh_stack_manager.scaling_profiles%
+
+    roh_stack_manager.service.stack_manager:
+        class: ROH\Bundle\StackManagerBundle\Service\StackManagerService
+        arguments:
+            - @roh_stack_manager.service.template_squashing
+            - @platinum_pixs_aws.base
+
+    roh_stack_manager.service.stack_comparison:
+        class: ROH\Bundle\StackManagerBundle\Service\StackComparisonService
+
+    roh_stack_manager.service.template_squashing:
+        class: ROH\Bundle\StackManagerBundle\Service\TemplateSquashingService
+        arguments:
+            - @platinum_pixs_aws.base
+            - 'stacks.website.roh.org.uk'
+
+    roh_stack_manager.service.template_expansion:
+        class: ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService
+
+    roh_stack_manager.twig.cidr:
+        class:  ROH\Bundle\StackManagerBundle\TwigExtension\CidrTwigExtension
+        tags:
+            - { name: twig.extension }

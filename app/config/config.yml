@@ -1,0 +1,15 @@
+framework:
+    templating:
+        engines: ['twig']
+    # Required for the uri_signer service, which is always enabled.
+    secret: secret
+    # Required for the templating engine, although we don't need routing.  This
+    # file doesn't actually exist or need to exist for our purposes.
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+
+platinum_pixs_aws:
+    base:
+        key: %aws_access_key_id%
+        secret: %aws_secret_key%
+        region: %aws_region%

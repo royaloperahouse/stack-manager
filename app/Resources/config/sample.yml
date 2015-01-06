@@ -1,0 +1,12 @@
+defaults:
+    sample:
+        KeyName: Test
+        ImageId: ami-f0b11187
+environments:
+    sample:
+        production:
+            AvailabilityZone: eu-west-1a
+scaling_profiles:
+    sample:
+        default:
+            InstanceType: m3.medium
