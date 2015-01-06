@@ -50,8 +50,11 @@ class StackConfigMapper
      *
      * @param string $template Template to use to create the stack model.
      * @param string $environment Environment to use to create the stack model.
-     * @param string $scalingProfile Scaling profile to use to create the stack model, or the default if not supplied.
-     * @param string $name Name of the stack to create, or "{Environment}-{Template}-{WeekNumberingYear}W{WeekNumber}" if not supplied.
+     * @param string $scalingProfile Scaling profile to use to create the stack
+     *     model, or the default if not supplied.
+     * @param string $name Name of the stack to create, or
+     *     "{Environment}-{Template}-{WeekNumberingYear}W{WeekNumber}" if not
+     *     supplied.
      * @return Stack Model representing the stack.
      */
     public function create($template, $environment, $scalingProfile, $name = null)

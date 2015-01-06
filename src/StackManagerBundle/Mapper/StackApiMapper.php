@@ -59,7 +59,8 @@ class StackApiMapper
         // Get the stack name from API response, for if its case has been normalised.
         $name = $stack['StackName'];
 
-        // The stack template may contain sub-stacks as URLs, expand these so we have a complete representation of the stack.
+        // The stack template may contain sub-stacks as URLs, expand these so
+        // we have a complete representation of the stack.
         $templateBody = $this->templateExpansionService->getExpandedTemplateBody(
             $this->cloudFormationClient->GetTemplate([
                 'StackName' => $name,
