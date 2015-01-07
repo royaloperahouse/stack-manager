@@ -70,13 +70,13 @@ See the sample config file for an example of how to set this.
 
 You can view a stack before it has been created using the command:
 
-    app/console scaling-manager:preview-stack Template Environment [--name=...] [--scaling-profile=...]
+    app/console stack-manager:preview-stack Template Environment [--name=...] [--scaling-profile=...]
 
 This will show the template, parameters and tags of the stack that will be created.
 
 It can be created by running:
 
-    app/console scaling-manager:create-stack Template Environment [--name=...] [--scaling-profile=...]
+    app/console stack-manager:create-stack Template Environment [--name=...] [--scaling-profile=...]
 
 If a name is not specified, a name is automatically generated from the template name, environment and the current year and week number.
 
