@@ -50,7 +50,7 @@ class UpdateStackCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('roh-stack-manager:update-stack')
+            ->setName('stack-manager:update-stack')
             ->setDescription('Update the specified stack')
             ->addArgument(
                 'name',
