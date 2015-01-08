@@ -13,7 +13,6 @@ namespace ROH\Bundle\TemporalScalingBundle\Command;
 
 use Psr\Log;
 use ROH\Bundle\StackManagerBundle\Mapper\StackApiMapper;
-use ROH\Bundle\StackManagerBundle\Mapper\StackConfigMapper;
 use ROH\Bundle\TemporalScalingBundle\CalendarSource\AbstractCalendarSource;
 use ROH\Bundle\TemporalScalingBundle\Service\TemporalScalingService;
 use Symfony\Component\Console\Command\Command;
