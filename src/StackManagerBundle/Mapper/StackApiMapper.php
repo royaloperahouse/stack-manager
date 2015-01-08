@@ -11,6 +11,7 @@
 
 namespace ROH\Bundle\StackManagerBundle\Mapper;
 
+use DateTime;
 use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
@@ -44,11 +45,42 @@ class StackApiMapper
      */
     public function create($name)
     {
-        $stack = current($this->cloudFormationClient->DescribeStacks([
+        $stack = $this->createFromApiResponse(current($this->cloudFormationClient->DescribeStacks([
             'StackName' => $name,
-        ])->get('Stacks'));
+        ])->get('Stacks')));
 
-        foreach ($stack['Tags'] as $tag) {
+        return $stack;
+    }
+
+    /**
+     * Get Stack models for all stacks with an appropriate template and
+     * environment tag using the AWS CloudFormation API.
+     *
+     * @return array Stack models
+     */
+    public function findAll()
+    {
+        $response = $this->cloudFormationClient->DescribeStacks();
+        foreach ($response['Stacks'] as $data) {
+            $stack = $this->createFromApiResponse($data);
+            if ($stack) {
+                $stacks[] = $stack;
+            }
+        }
+
+        return $stacks;
+    }
+
+    /**
+     * Create a stack model from the stack portion of a CloudFormation API
+     * DescribeStacks response.
+     *
+     * @return Stack|null Model representing the stack, or null if the response
+     *     did not have a template and environment tag.
+     */
+    protected function createFromApiResponse(array $response)
+    {
+        foreach ($response['Tags'] as $tag) {
             if ($tag['Key'] === Stack::TEMPLATE_TAG) {
                 $templateName = $tag['Value'];
             } elseif ($tag['Key'] === Stack::ENVIRONMENT_TAG) {
@@ -56,8 +88,12 @@ class StackApiMapper
             }
         }
 
+        if (!isset($templateName) || !isset($environment)) {
+            return null;
+        }
+
         // Get the stack name from API response, for if its case has been normalised.
-        $name = $stack['StackName'];
+        $name = $response['StackName'];
 
         // The stack template may contain sub-stacks as URLs, expand these so
         // we have a complete representation of the stack.
@@ -67,11 +103,19 @@ class StackApiMapper
             ])['TemplateBody']
         );
 
+        // LastUpdatedTime is not set if the stack has never been updated, but
+        // for our purposes it is equivalent to the CreationTime in such case.
+        $response['LastUpdatedTime'] = $response['CreationTime'];
+
         return new Stack(
             $name,
             $environment,
             new Template($templateName, $templateBody),
-            Parameters::newFromCloudFormationResponseElement($stack['Parameters'])
+            Parameters::newFromCloudFormationResponseElement($response['Parameters']),
+            $response['StackId'],
+            $response['StackStatus'],
+            new DateTime($response['CreationTime']),
+            new DateTime($response['LastUpdatedTime'])
         );
     }
 }
