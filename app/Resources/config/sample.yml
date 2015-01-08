@@ -9,4 +9,8 @@ environments:
 scaling_profiles:
     sample:
         default:
+            InstanceType: m3.large
+        Day:
+            InstanceType: m3.xlarge
+        Night:
             InstanceType: m3.medium

@@ -13,6 +13,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new PlatinumPixs\Aws\PlatinumPixsAwsBundle(),
             new ROH\Bundle\StackManagerBundle\ROHStackManagerBundle(),
+            new ROH\Bundle\TemporalScalingBundle\ROHTemporalScalingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

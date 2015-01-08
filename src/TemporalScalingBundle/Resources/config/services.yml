@@ -1,0 +1,26 @@
+services:
+    roh_temporal_scaling.command.perform_temporal_scaling:
+        class: ROH\Bundle\TemporalScalingBundle\Command\PerformScalingCommand
+        arguments:
+            - @logger
+            - @roh_stack_manager.mapper.stack_api
+            - @roh_temporal_scaling.calendar_source.google_calendar
+            - @roh_temporal_scaling.service.temporal_scaling
+            - %roh_temporal_scaling.calendar_sources%
+        tags:
+            - { name: console.command }
+
+    roh_temporal_scaling.service.temporal_scaling:
+        class: ROH\Bundle\TemporalScalingBundle\Service\TemporalScalingService
+        arguments:
+            - @logger
+            - @roh_stack_manager.service.stack_manager
+            - @roh_stack_manager.mapper.stack_config
+            - %roh_stack_manager.scaling_profiles%
+
+    roh_temporal_scaling.calendar_source.google_calendar:
+        class: ROH\Bundle\TemporalScalingBundle\CalendarSource\GoogleCalendarCalendarSource
+        arguments:
+            - @logger
+            - %google_api_application_name%
+            - %google_api_developer_key%
