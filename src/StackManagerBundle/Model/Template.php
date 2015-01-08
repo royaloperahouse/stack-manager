@@ -11,6 +11,7 @@
 
 namespace ROH\Bundle\StackManagerBundle\Model;
 
+use Closure;
 use RuntimeException;
 use stdClass;
 
@@ -42,9 +43,9 @@ class Template
 
     /**
      * @param string $name
-     * @param stdClass $body
+     * @param stdClass|Closure $body
      */
-    public function __construct($name, stdClass $body)
+    public function __construct($name, $body)
     {
         $this->name = $name;
         $this->body = $body;
@@ -63,6 +64,16 @@ class Template
      */
     public function getBody()
     {
+        if ($this->body instanceof Closure) {
+            $closure = $this->body;
+            $this->body = $closure();
+        } elseif (!$this->body instanceof stdClass) {
+            throw new RuntimeException(sprintf(
+                'Template body must be either a Closure or stdClass, is of type "%s"',
+                gettype($this->body)
+            ));
+        }
+
         return $this->body;
     }
 
@@ -71,7 +82,7 @@ class Template
      */
     public function getBodyJSON()
     {
-        $json = json_encode($this->body, self::JSON_OPTIONS);
+        $json = json_encode($this->getBody(), self::JSON_OPTIONS);
         if ($json === false) {
             throw new RuntimeException(sprintf(
                 'Template body could not be encoded as JSON, error: %s',

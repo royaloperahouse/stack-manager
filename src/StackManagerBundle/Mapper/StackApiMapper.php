@@ -27,14 +27,14 @@ class StackApiMapper
 {
     protected $templateExpansionService;
 
-    protected $cloudFormationClient;
+    protected $cloudFormation;
 
     public function __construct(
         TemplateExpansionService $templateExpansionService,
         AwsClient $awsClient
     ) {
         $this->templateExpansionService = $templateExpansionService;
-        $this->cloudFormationClient = $awsClient->get('CloudFormation');
+        $this->cloudFormation = $awsClient->get('CloudFormation');
     }
 
     /**
@@ -45,7 +45,7 @@ class StackApiMapper
      */
     public function create($name)
     {
-        $stack = $this->createFromApiResponse(current($this->cloudFormationClient->DescribeStacks([
+        $stack = $this->createFromApiResponse(current($this->cloudFormation->DescribeStacks([
             'StackName' => $name,
         ])->get('Stacks')));
 
@@ -60,7 +60,7 @@ class StackApiMapper
      */
     public function findAll()
     {
-        $response = $this->cloudFormationClient->DescribeStacks();
+        $response = $this->cloudFormation->DescribeStacks();
         foreach ($response['Stacks'] as $data) {
             $stack = $this->createFromApiResponse($data);
             if ($stack) {
@@ -97,11 +97,15 @@ class StackApiMapper
 
         // The stack template may contain sub-stacks as URLs, expand these so
         // we have a complete representation of the stack.
-        $templateBody = $this->templateExpansionService->getExpandedTemplateBody(
-            $this->cloudFormationClient->GetTemplate([
-                'StackName' => $name,
-            ])['TemplateBody']
-        );
+        $templateExpansionService = $this->templateExpansionService;
+        $cloudFormation = $this->cloudFormation;
+        $templateBodyCallback = function() use ($name, $templateExpansionService, $cloudFormation) {
+            return $templateExpansionService->getExpandedTemplateBody(
+                $cloudFormation->GetTemplate([
+                    'StackName' => $name,
+                ])['TemplateBody']
+            );
+        };
 
         // LastUpdatedTime is not set if the stack has never been updated, but
         // for our purposes it is equivalent to the CreationTime in such case.
@@ -110,7 +114,7 @@ class StackApiMapper
         return new Stack(
             $name,
             $environment,
-            new Template($templateName, $templateBody),
+            new Template($templateName, $templateBodyCallback),
             Parameters::newFromCloudFormationResponseElement($response['Parameters']),
             $response['StackId'],
             $response['StackStatus'],
