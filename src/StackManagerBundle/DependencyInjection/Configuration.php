@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration tree for the stack manager
+ * Configuration tree for the stack manager bundle
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
