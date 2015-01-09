@@ -60,6 +60,8 @@ class StackApiMapper
      */
     public function findAll()
     {
+        $stacks = [];
+
         $response = $this->cloudFormation->DescribeStacks();
         foreach ($response['Stacks'] as $data) {
             $stack = $this->createFromApiResponse($data);
