@@ -41,7 +41,7 @@ class TemporalScalingService
         StackManagerService $stackManager,
         StackConfigMapper $configStackMapper,
         array $scalingProfiles,
-        $minimumUpdateInterval = 0
+        $minimumUpdateInterval = 3600
     ) {
         $this->logger = $logger;
         $this->stackManager = $stackManager;
