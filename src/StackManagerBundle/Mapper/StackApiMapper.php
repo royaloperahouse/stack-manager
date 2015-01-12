@@ -13,6 +13,7 @@ namespace ROH\Bundle\StackManagerBundle\Mapper;
 
 use DateTime;
 use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
+use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
@@ -82,7 +83,41 @@ class StackApiMapper
      */
     protected function createFromApiResponse(array $response)
     {
+        PHPUnit_Framework_Assert::assertArrayHasKey(
+            'StackId', $response,
+            'Stack portion of CloudFormation API response must contain a "StackId" key'
+        );
+        PHPUnit_Framework_Assert::assertArrayHasKey(
+            'StackName', $response,
+            'Stack portion of CloudFormation API response must contain a "StackName" key'
+        );
+        PHPUnit_Framework_Assert::assertArrayHasKey(
+            'StackStatus', $response,
+            'Stack portion of CloudFormation API response must contain a "StackStatus" key'
+        );
+        PHPUnit_Framework_Assert::assertArrayHasKey(
+            'Parameters', $response,
+            'Stack portion of CloudFormation API response must contain a "Parameters" key'
+        );
+        PHPUnit_Framework_Assert::assertArrayHasKey(
+            'Tags', $response,
+            'Stack portion of CloudFormation API response must contain a "Tags" key'
+        );
+        PHPUnit_Framework_Assert::assertArrayHasKey(
+            'CreationTime', $response,
+            'Stack portion of CloudFormation API response must contain a "CreationTime" key'
+        );
+
         foreach ($response['Tags'] as $tag) {
+            PHPUnit_Framework_Assert::assertArrayHasKey(
+                'Key', $tag,
+                'Tags portion of CloudFormation API response must contain a "Key" key'
+            );
+            PHPUnit_Framework_Assert::assertArrayHasKey(
+                'Value', $tag,
+                'Tags portion of CloudFormation API response must contain a "Value" key'
+            );
+
             if ($tag['Key'] === Stack::TEMPLATE_TAG) {
                 $templateName = $tag['Value'];
             } elseif ($tag['Key'] === Stack::ENVIRONMENT_TAG) {
