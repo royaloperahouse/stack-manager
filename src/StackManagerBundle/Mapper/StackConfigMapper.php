@@ -93,9 +93,11 @@ class StackConfigMapper
             );
         }
 
-        $parameters = $this->defaultParameters[$template]
-            + $this->environmentParameters[$template][$environment]
-            + $this->scalingProfileParameters[$template][$scalingProfile];
+        $parameters = array_replace(
+            $this->defaultParameters[$template],
+            $this->environmentParameters[$template][$environment],
+            $this->scalingProfileParameters[$template][$scalingProfile]
+        );
 
         $body = json_decode($this->templating->render(
             sprintf('%s.json.twig', $template),
