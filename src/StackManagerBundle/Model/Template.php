@@ -28,8 +28,11 @@ class Template
      * will be looking at these, and don't need to optimise for size) and are
      * safe from being mangled when being translated between JSON and PHP
      * objects.
+     *
+     * This option corresponds to the value:
+     *     JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_BIGINT_AS_STRING
      */
-    const JSON_OPTIONS = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_BIGINT_AS_STRING;
+    const JSON_OPTIONS = 194;
 
     /**
      * @var string
