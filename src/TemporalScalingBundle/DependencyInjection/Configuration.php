@@ -32,7 +32,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('calendar_sources')
-                    ->requiresAtLeastOneElement()
                     ->info('Ids of calendar to use for each template')
                     ->prototype('scalar')
                     ->end()
