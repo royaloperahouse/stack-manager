@@ -4,5 +4,7 @@ app/logs/*
 app/bootstrap.php.cache
 app/check.php
 app/SymfonyRequirements.php
+app/Resources/config/*
+app/Resources/views/*
 bin/*
 vendor/

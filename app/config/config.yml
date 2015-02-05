@@ -1,3 +1,6 @@
+imports:
+    - { resource: parameters.ini }
+
 framework:
     templating:
         engines: ['twig']
