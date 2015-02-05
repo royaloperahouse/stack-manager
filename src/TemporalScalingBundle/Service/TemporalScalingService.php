@@ -77,6 +77,19 @@ class TemporalScalingService
             return false;
         }
 
+        if ($stack->getStatus() !== 'CREATE_COMPLETE'
+            || $stack->getStatus() !== 'UPDATE_COMPLETE'
+            || $stack->getStatus() !== 'ROLLBACK_COMPLETE'
+        ) {
+            $this->logger->warn(sprintf(
+                'Not scaling stack "%s", as its current status ("%s") is not CREATE_COMPLETE, UPDATE_COMPLETE or ROLLBACK_COMPLETE',
+                $stack->getName(),
+                $stack->getStatus()
+            ));
+
+            return false;
+        }
+
         $scalingProfile = $event === null ? 'default' : $event->getSummary();
 
         if (!isset($this->scalingProfiles[$stack->getTemplate()->getName()][$scalingProfile])) {
