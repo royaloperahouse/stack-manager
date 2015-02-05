@@ -71,17 +71,18 @@ class PerformScalingCommand extends Command
     {
         $stacks = $this->apiStackMapper->findAll();
         foreach ($stacks as $stack) {
-            if (!isset($this->calendarSources[$stack->getTemplate()->getName()])) {
+            $sourceKey = str_replace('-', '_', $stack->getName());
+
+            if (!isset($this->calendarSources[$sourceKey])) {
                 $this->logger->debug(sprintf(
-                    'No calendar source for stack "%s" (template "%s"), not applying temporal scaling',
-                    $stack->getName(),
-                    $stack->getTemplate()->getName()
+                    'No calendar source for stack "%s", not applying temporal scaling',
+                    $stack->getName()
                 ));
 
                 continue;
             }
 
-            $currentEvents = $this->calendarSource->getCurrentEvents($this->calendarSources[$stack->getTemplate()->getName()]);
+            $currentEvents = $this->calendarSource->getCurrentEvents($this->calendarSources[$sourceKey]);
 
             // Current events are sorted by duration ascending, we select the first
             // one on the basis that if there is more than one current event we
