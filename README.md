@@ -98,6 +98,24 @@ When deleting a stack, you must always pass the "--really" parameter:
 
     app/console stack-manager:delete-stack Name --really
 
+## Temporal scaling
+
+The Temporal Scaling module allows you to automatically update stacks based on events in a calendar feed.  While AWS comes with a range of tools to scale resources on a schedule, generally each product has its own way of describing the changes (which itself needs some manual management).  Additionally, some services lack the ability to scale on a schedule entirely.  Temporal Scaling expands scheduled scaling to any resource that can be described using CloudFormation templates, providing a consistent interface to all of them.
+
+### Set up
+
+At the moment, only Google Calendar feeds are supported.
+
+- Using the [Google Developers Console](https://console.developers.google.com/project) generate an API key for a project that has access to the Google Calendar API enabled.  Add these and an application name (just an arbitrary string) to your parameters.ini as "google_api_application_name" and "google_api_developer_key".
+
+- Create a calendar in Google Calendar.  Within this calendar, the summary of events should correspond to a scaling profile defined in your stack template configuration.
+
+- Populate the "roh_temporal_scaling.calendar_sources" with an array of stack names to calendar ids.
+
+- Run the command to action any scheduled scaling events:
+
+    app/console temporal-scaling:perform-scaling
+
 ## About
 
 Stack Manager was created by the [Royal Opera House](http://www.roh.org.uk/) for internal use and is made available for the benefit of the community under the [MIT License](LICENSE).

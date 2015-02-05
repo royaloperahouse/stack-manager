@@ -16,3 +16,6 @@ platinum_pixs_aws:
         key: %aws_access_key_id%
         secret: %aws_secret_key%
         region: %aws_region%
+
+roh_temporal_scaling:
+    calendar_sources: {}

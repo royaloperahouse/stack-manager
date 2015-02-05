@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration tree for the stack manager
+ * Configuration tree for the stack manager bundle
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -34,7 +34,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('defaults')
                     ->requiresAtLeastOneElement()
                     ->info('Default parameters for the templates')
-                    ->example('sample')
                     ->prototype('array')
                         ->prototype('scalar')
                         ->end()
@@ -43,7 +42,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('environments')
                     ->requiresAtLeastOneElement()
                     ->info('Environment specific parameters for the templates')
-                    ->example('sample')
                     ->prototype('array')
                         ->prototype('array')
                             ->prototype('scalar')
@@ -54,7 +52,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('scaling_profiles')
                     ->requiresAtLeastOneElement()
                     ->info('Scaling profile specific parameters for the templates')
-                    ->example('sample')
                     ->prototype('array')
                         ->prototype('array')
                             ->prototype('scalar')

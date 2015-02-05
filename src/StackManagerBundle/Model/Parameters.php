@@ -77,6 +77,11 @@ class Parameters implements Iterator
         return $argument;
     }
 
+    public function toArray()
+    {
+        return $this->parameters;
+    }
+
     public function current()
     {
         return $this->parameters[$this->key()];

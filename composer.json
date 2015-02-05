@@ -13,7 +13,8 @@
         "sensio/generator-bundle": "2.5.*",
         "sensio/distribution-bundle": "3.0.*",
         "twig/twig" : "1.16.*",
-        "phpspec/php-diff": "1.0.*"
+        "phpspec/php-diff": "1.0.*",
+        "google/apiClient": "1.1.*"
     },
     "scripts": {
         "post-install-cmd": [

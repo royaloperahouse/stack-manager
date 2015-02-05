@@ -3,3 +3,5 @@
     aws_access_key_id =
     aws_secret_key =
     aws_template_bucket =
+    google_api_application_name =
+    google_api_developer_key =
