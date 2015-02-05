@@ -78,8 +78,8 @@ class TemporalScalingService
         }
 
         if ($stack->getStatus() !== 'CREATE_COMPLETE'
-            || $stack->getStatus() !== 'UPDATE_COMPLETE'
-            || $stack->getStatus() !== 'ROLLBACK_COMPLETE'
+            && $stack->getStatus() !== 'UPDATE_COMPLETE'
+            && $stack->getStatus() !== 'ROLLBACK_COMPLETE'
         ) {
             $this->logger->warn(sprintf(
                 'Not scaling stack "%s", as its current status ("%s") is not CREATE_COMPLETE, UPDATE_COMPLETE or ROLLBACK_COMPLETE',
