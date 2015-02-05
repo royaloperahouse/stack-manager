@@ -146,7 +146,9 @@ class StackApiMapper
 
         // LastUpdatedTime is not set if the stack has never been updated, but
         // for our purposes it is equivalent to the CreationTime in such case.
-        $response['LastUpdatedTime'] = $response['CreationTime'];
+        if (!isset($response['LastUpdatedTime'])) {
+            $response['LastUpdatedTime'] = $response['CreationTime'];
+        }
 
         return new Stack(
             $name,
