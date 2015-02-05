@@ -67,7 +67,7 @@ class Stack
     protected $status;
 
     /**
-     * Creatime time in CloudFormation.  Only available for models created from
+     * Creation time in CloudFormation.  Only available for models created from
      * the API.
      *
      * @var DateTime|null
