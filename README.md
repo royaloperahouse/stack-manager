@@ -106,9 +106,15 @@ The Temporal Scaling module allows you to automatically update stacks based on e
 
 At the moment, only Google Calendar feeds are supported.
 
-Using the [Google Developers Console](https://console.developers.google.com/project) generate an API key for a project that has access to the Google Calendar API enabled.  Add these and an application name (just an arbitrary string) to your parameters.ini as "google_api_application_name" and "google_api_developer_key".
+- Using the [Google Developers Console](https://console.developers.google.com/project) generate an API key for a project that has access to the Google Calendar API enabled.  Add these and an application name (just an arbitrary string) to your parameters.ini as "google_api_application_name" and "google_api_developer_key".
 
-Create a calendar in Google Calendar.  Within this calendar, the summary of events should correspond to a scaling profile defined in your stack template configuration.
+- Create a calendar in Google Calendar.  Within this calendar, the summary of events should correspond to a scaling profile defined in your stack template configuration.
+
+- Populate the "roh_temporal_scaling.calendar_sources" with an array of stack names to calendar ids.
+
+- Run the command to action any scheduled scaling events:
+
+    app/console temporal-scaling:perform-scaling
 
 ## About
 
