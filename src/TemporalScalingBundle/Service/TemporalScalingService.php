@@ -121,15 +121,6 @@ class TemporalScalingService
             }
         }
 
-        if ($stack->getTemplate()->getBodyJSON() !== $newStack->getTemplate()->getBodyJSON()) {
-            $this->logger->warn(sprintf(
-                'Not updating stack "%s" as updating it would affect the template body',
-                $stack->getName()
-            ));
-
-            return false;
-        }
-
         $this->logger->info(sprintf(
             'Updating stack "%s" using scaling profile "%s"',
             $stack->getName(),
