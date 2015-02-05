@@ -90,5 +90,6 @@ services:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\RdsTwigExtension
         arguments:
             - @platinum_pixs_aws.base
+            - %aws_region%
         tags:
             - { name: twig.extension }
