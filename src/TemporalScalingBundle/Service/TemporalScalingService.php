@@ -110,7 +110,7 @@ class TemporalScalingService
         );
 
         $scalingProfileParameterKeys = array_keys($this->scalingProfiles[$stack->getTemplate()->getName()][$scalingProfile]);
-        $changedParameterKeys = array_keys(array_diff($newStack->getParameters()->toArray(), $stack->getParameters()->toArray()));
+        $changedParameterKeys = array_keys(array_diff_assoc($newStack->getParameters()->toArray(), $stack->getParameters()->toArray()));
 
         if (!$changedParameterKeys) {
             $this->logger->info(sprintf(
