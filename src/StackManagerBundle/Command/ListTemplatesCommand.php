@@ -12,6 +12,8 @@
 namespace ROH\Bundle\StackManagerBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,9 +54,9 @@ class ListTemplatesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $table = [];
+        $templates = [];
         foreach ($this->defaults as $name => $defaults) {
-            $table[$name] = [
+            $templates[$name] = [
                 'environments' => [],
                 'scalingProfiles' => [],
             ];
@@ -62,16 +64,29 @@ class ListTemplatesCommand extends Command
 
         foreach ($this->environments as $template => $environments) {
             foreach ($environments as $name => $options) {
-                $table[$template]['environments'][] = $name;
+                $templates[$template]['environments'][] = $name;
             }
         }
 
         foreach ($this->scalingProfiles as $template => $scalingProfiles) {
             foreach ($scalingProfiles as $name => $options) {
-                $table[$template]['scalingProfiles'][] = $name;
+                $templates[$template]['scalingProfiles'][] = $name;
             }
         }
 
-        var_dump($table);
+        $table = new Table($output);
+        $table->setHeaders(['Name', 'Environments', 'Scaling profiles']);
+        foreach ($templates as $name => $data) {
+            $table->addRow([
+                $name,
+                implode("\n", $data['environments']),
+                implode("\n", $data['scalingProfiles'])
+            ]);
+
+            if ($name !== end(array_keys($templates))) {
+                $table->addRow(new TableSeparator);
+            }
+        }
+        $table->render();
     }
 }
