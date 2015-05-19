@@ -86,6 +86,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    roh_stack_manager.twig.ebs:
+        class:  ROH\Bundle\StackManagerBundle\TwigExtension\EbsTwigExtension
+        arguments:
+            - @platinum_pixs_aws.base
+        tags:
+            - { name: twig.extension }
+
     roh_stack_manager.twig.rds:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\RdsTwigExtension
         arguments:
