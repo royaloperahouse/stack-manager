@@ -29,17 +29,17 @@ class ListTemplatesCommand extends Command
     /**
      * @var array
      */
-    protected $defaults;
+    private $defaults;
 
     /**
      * @var array
      */
-    protected $environments;
+    private $environments;
 
     /**
      * @var array
      */
-    protected $scalingProfiles;
+    private $scalingProfiles;
 
     public function __construct(array $defaults, array $environments, array $scalingProfiles)
     {

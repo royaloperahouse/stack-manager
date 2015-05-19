@@ -27,11 +27,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class UpdateStackCommand extends Command
 {
-    protected $apiStackManager;
+    /**
+     * @var StackApiMapper
+     */
+    private $apiStackManager;
 
-    protected $configStackMapper;
+    /**
+     * @var StackConfigMapper
+     */
+    private $configStackMapper;
 
-    protected $stackManager;
+    /**
+     * @var StackManagerService
+     */
+    private $stackManager;
 
     public function __construct(
         StackApiMapper $apiStackMapper,

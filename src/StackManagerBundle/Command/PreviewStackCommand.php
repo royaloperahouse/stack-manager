@@ -25,9 +25,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PreviewStackCommand extends Command
 {
-    protected $configStackMapper;
+    /**
+     * @var StackConfigMapper
+     */
+    private $configStackMapper;
 
-    protected $stackManager;
+    /**
+     * @var StackManagerService
+     */
+    private $stackManager;
 
     public function __construct(StackConfigMapper $configStackMapper)
     {

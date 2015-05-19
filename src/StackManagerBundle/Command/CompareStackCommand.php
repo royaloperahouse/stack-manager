@@ -28,11 +28,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CompareStackCommand extends Command
 {
-    protected $apiStackMapper;
+    /**
+     * @var StackApiMapper
+     */
+    private $apiStackMapper;
 
-    protected $configStackMapper;
+    /**
+     * @var StackConfigMapper
+     */
+    private $configStackMapper;
 
-    protected $stackComparisonService;
+    /**
+     * @var StackComparisonService
+     */
+    private $stackComparisonService;
 
     public function __construct(
         StackApiMapper $apiStackMapper,

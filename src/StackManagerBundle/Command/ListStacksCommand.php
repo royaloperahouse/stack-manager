@@ -27,7 +27,7 @@ class ListStacksCommand extends Command
     /**
      * @param StackApiMapper
      */
-    protected $apiStackMapper;
+    private $apiStackMapper;
 
     public function __construct(StackApiMapper $apiStackMapper)
     {

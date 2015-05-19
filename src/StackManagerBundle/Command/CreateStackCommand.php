@@ -26,9 +26,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CreateStackCommand extends Command
 {
-    protected $configStackMapper;
+    /**
+     * @var StackConfigMapper
+     */
+    private $configStackMapper;
 
-    protected $stackManager;
+    /**
+     * @var StackManagerService
+     */
+    private $stackManager;
 
     public function __construct(StackConfigMapper $configStackMapper, StackManagerService $stackManager)
     {

@@ -27,9 +27,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DeleteStackCommand extends Command
 {
-    protected $apiStackMapper;
+    /**
+     * @var StackApiMapper
+     */
+    private $apiStackMapper;
 
-    protected $stackManager;
+    /**
+     * @var StackManagerService
+     */
+    private $stackManager;
 
     public function __construct(StackApiMapper $apiStackMapper, StackManagerService $stackManager)
     {
