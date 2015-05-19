@@ -26,9 +26,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ListTemplatesCommand extends Command
 {
-    protected $apiStackMapper;
+    /**
+     * @var array
+     */
+    protected $defaults;
 
-    protected $stackManager;
+    /**
+     * @var array
+     */
+    protected $environments;
+
+    /**
+     * @var array
+     */
+    protected $scalingProfiles;
 
     public function __construct(array $defaults, array $environments, array $scalingProfiles)
     {
