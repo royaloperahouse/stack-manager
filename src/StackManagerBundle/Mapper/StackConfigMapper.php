@@ -84,13 +84,13 @@ class StackConfigMapper
         }
 
         if ($name === null) {
-            $name = sprintf(
+            $name = preg_replace('#[^-a-zA-Z0-9]#', '', sprintf(
                 '%s-%s-%dW%d',
-                ucfirst($environment),
-                ucfirst($template),
+                ucwords(str_replace('_', ' ', $environment)),
+                ucwords(str_replace('_', ' ', $template)),
                 date('o'), // ISO week-numbering year
                 date('W') // ISO week number
-            );
+            ));
         }
 
         $parameters = array_replace(
