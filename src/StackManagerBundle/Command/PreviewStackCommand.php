@@ -88,18 +88,20 @@ class PreviewStackCommand extends Command
 
         $stack = $this->configStackMapper->create($template, $environment, $scalingProfile, $name);
 
-        $output->writeLn('<info>Template:</info>');
+        $output->writeLn('<info>Template</info>');
         $output->write($stack->getTemplate()->getBodyJSON());
+        $output->writeLn('');
 
-        $output->writeLn('<info>Parameters:</info>');
+        $output->writeLn('<info>Parameters</info>');
         $table = new Table($output);
         $table->setHeaders(['Name', 'Value']);
         foreach ($stack->getParameters() as $name => $value) {
             $table->addRow([$name, $value]);
         }
         $table->render();
+        $output->writeLn('');
 
-        $output->writeLn('<info>Tags:</info>');
+        $output->writeLn('<info>Tags</info>');
         $table = new Table($output);
         $table->setHeaders(['Key', 'Value']);
         foreach ($stack->getTags() as $key => $value) {
