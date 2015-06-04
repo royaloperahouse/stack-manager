@@ -6,13 +6,13 @@
     },
     "require": {
         "php": ">=5.5.0",
-        "symfony/symfony": "2.6.*",
+        "symfony/symfony": "2.7.*",
         "platinumpixs/aws-symfony2-bundle": "1.1.*",
-        "phpunit/phpunit": "4.4.*",
-        "symfony/monolog-bundle": "2.6.*",
+        "phpunit/phpunit": "4.6.*",
+        "symfony/monolog-bundle": "2.7.*",
         "sensio/generator-bundle": "2.5.*",
         "sensio/distribution-bundle": "3.0.*",
-        "twig/twig" : "1.16.*",
+        "twig/twig" : "1.18.*",
         "phpspec/php-diff": "1.0.*",
         "google/apiClient": "1.1.*"
     },
