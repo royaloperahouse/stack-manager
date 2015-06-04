@@ -94,9 +94,9 @@ class PreviewStackCommand extends Command
 
         $output->writeLn('<info>Parameters</info>');
         $table = new Table($output);
-        $table->setHeaders(['Name', 'Value']);
-        foreach ($stack->getParameters() as $name => $value) {
-            $table->addRow([$name, $value]);
+        $table->setHeaders(['Key', 'Value']);
+        foreach ($stack->getParameters() as $key => $value) {
+            $table->addRow([$key, $value]);
         }
         $table->render();
         $output->writeLn('');
