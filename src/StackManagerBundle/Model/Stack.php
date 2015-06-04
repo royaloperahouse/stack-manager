@@ -109,7 +109,7 @@ class Stack
             'Stack name must be no more than 255 characters in length'
         );
         PHPUnit_Framework_Assert::assertRegExp(
-            '#[a-zA-Z][-a-zA-Z0-9]*#', $name,
+            '#^[a-zA-Z][-a-zA-Z0-9]*$#', $name,
             'Stack name must begin with a letter and contain only alphanumeric characters and dashes'
         );
 
