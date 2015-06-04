@@ -87,14 +87,18 @@ class ListTemplatesCommand extends Command
 
         $table = new Table($output);
         $table->setHeaders(['Name', 'Environments', 'Scaling profiles']);
+
+        $i = 0;
         foreach ($templates as $name => $data) {
+            $i++;
+
             $table->addRow([
                 $name,
                 implode("\n", $data['environments']),
                 implode("\n", $data['scalingProfiles'])
             ]);
 
-            if ($name !== end(array_keys($templates))) {
+            if ($i !== count($templates)) {
                 $table->addRow(new TableSeparator);
             }
         }
