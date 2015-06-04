@@ -47,7 +47,8 @@ class StackConfigMapper
     }
 
     /**
-     * Create a stack model with the specified template, environment and scaling profile.
+     * Create a stack model with the specified template, environment and scaling
+     * profile.
      *
      * @param string $template Template to use to create the stack model.
      * @param string $environment Environment to use to create the stack model.

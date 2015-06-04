@@ -31,8 +31,10 @@ class StackComparisonService
      * @return string Rendered unified diff of the changes between the first
      *     and second parameters models.
      */
-    public function compareParameters(Parameters $parametersA, Parameters $parametersB)
-    {
+    public function compareParameters(
+        Parameters $parametersA,
+        Parameters $parametersB
+    ) {
         /**
          * Convert the parameters object to a numerically indexed array of
          * strings representing each of the parameters (name and value).

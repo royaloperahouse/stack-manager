@@ -17,7 +17,8 @@ use PHPUnit_Framework_Assert;
 /**
  * Immutable model repesenting a stacks tags.
  *
- * Note: As of 2015-01-02 it is currently not possible to update the tags of a stack using the CloudFormation API.
+ * Note: As of 2015-01-02 it is currently not possible to update the tags of a
+ * stack using the CloudFormation API.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -55,7 +56,8 @@ class Tags implements Iterator
     }
 
     /**
-     * Convert the model to an array of arguments ready to be passed to the CloudFormation API.
+     * Convert the model to an array of arguments ready to be passed to the
+     * CloudFormation API.
      *
      * @return array Arguments for passing to the CloudFormation API.
      */

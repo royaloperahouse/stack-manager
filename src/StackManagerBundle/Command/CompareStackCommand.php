@@ -61,7 +61,10 @@ class CompareStackCommand extends Command
     {
         $this
             ->setName('stack-manager:compare-stack')
-            ->setDescription('Compare the template and parameters of a given stack in AWS with what would be generated if that stack was created now')
+            ->setDescription(
+                'Compare the template and parameters of a given stack in AWS'
+                . ' with what would be generated if that stack was created now'
+            )
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
@@ -94,16 +97,20 @@ class CompareStackCommand extends Command
         );
 
         $output->writeLn('<info>Changes to the CloudFormation parameters:</info>');
-        $output->write($this->coloriseUnifiedDiff($this->stackComparisonService->compareParameters(
-            $stackA->getParameters(),
-            $stackB->getParameters()
-        )));
+        $output->write($this->coloriseUnifiedDiff(
+            $this->stackComparisonService->compareParameters(
+                $stackA->getParameters(),
+                $stackB->getParameters()
+            )
+        ));
 
         $output->writeLn('<info>Changes to the CloudFormation template:</info>');
-        $output->write($this->coloriseUnifiedDiff($this->stackComparisonService->compareTemplate(
-            $stackA->getTemplate(),
-            $stackB->getTemplate()
-        )));
+        $output->write($this->coloriseUnifiedDiff(
+            $this->stackComparisonService->compareTemplate(
+                $stackA->getTemplate(),
+                $stackB->getTemplate()
+            )
+        ));
     }
 
     /**

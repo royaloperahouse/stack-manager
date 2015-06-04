@@ -44,7 +44,8 @@ class Parameters implements Iterator
     }
 
     /**
-     * Create a parameters model from the parameters element of a CloudFormation API response.
+     * Create a parameters model from the parameters element of a CloudFormation
+     * API response.
      *
      * @param array $response Parameters element of a CloudFormation API response.
      * @return Parameters
@@ -60,7 +61,8 @@ class Parameters implements Iterator
     }
 
     /**
-     * Convert the model to an array of arguments ready to be passed to the CloudFormation API.
+     * Convert the model to an array of arguments ready to be passed to the
+     * CloudFormation API.
      *
      * @return array Arguments for passing to the CloudFormation API.
      */

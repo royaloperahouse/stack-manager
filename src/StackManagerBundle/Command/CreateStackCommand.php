@@ -36,8 +36,10 @@ class CreateStackCommand extends Command
      */
     private $stackManager;
 
-    public function __construct(StackConfigMapper $configStackMapper, StackManagerService $stackManager)
-    {
+    public function __construct(
+        StackConfigMapper $configStackMapper,
+        StackManagerService $stackManager
+    ) {
         $this->configStackMapper = $configStackMapper;
         $this->stackManager = $stackManager;
         parent::__construct();
@@ -87,7 +89,12 @@ class CreateStackCommand extends Command
         $name = $input->getOption('name');
         $scalingProfile = $input->getOption('scaling-profile');
 
-        $stack = $this->configStackMapper->create($template, $environment, $scalingProfile, $name);
+        $stack = $this->configStackMapper->create(
+            $template,
+            $environment,
+            $scalingProfile,
+            $name
+        );
 
         $this->stackManager->create($stack);
     }

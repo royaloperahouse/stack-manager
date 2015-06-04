@@ -91,7 +91,9 @@ class TemplateSquashingService
 
             $this->squashTemplate($data->Properties->TemplateBody);
 
-            $data->Properties->TemplateURL = $this->uploadTemplate($data->Properties->TemplateBody);
+            $data->Properties->TemplateURL = $this->uploadTemplate(
+                $data->Properties->TemplateBody
+            );
             unset($data->Properties->TemplateBody);
         }
     }

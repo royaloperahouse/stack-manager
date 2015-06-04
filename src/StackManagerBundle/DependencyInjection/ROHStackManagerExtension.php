@@ -58,7 +58,10 @@ class ROHStackManagerExtension extends Extension
             $container->setParameter('roh_stack_manager.' . $key, $value);
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../Resources/config')
+        );
         $loader->load('services.yml');
 
     }

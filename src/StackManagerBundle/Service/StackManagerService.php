@@ -35,7 +35,8 @@ class StackManagerService
     }
 
     /**
-     * Create the stack represented by the supplied model using the CloudFormation API.
+     * Create the stack represented by the supplied model using the
+     * CloudFormation API.
      *
      * @param Stack $stack Model of the stack to create.
      * @return string Id of the created stack.
@@ -55,7 +56,8 @@ class StackManagerService
     }
 
     /**
-     * Update the stack represented by the supplied model using the CloudFormation API.
+     * Update the stack represented by the supplied model using the
+     * CloudFormation API.
      *
      * @param Stack $stack Model of the stack to update.
      * @return void

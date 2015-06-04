@@ -79,7 +79,9 @@ class TemplateExpansionService
                 continue;
             }
 
-            $data->Properties->TemplateBody = $this->downloadTemplate($data->Properties->TemplateURL);
+            $data->Properties->TemplateBody = $this->downloadTemplate(
+                $data->Properties->TemplateURL
+            );
             unset($data->Properties->TemplateURL);
 
             $this->expandTemplate($data->Properties->TemplateBody);

@@ -41,8 +41,11 @@ class ListTemplatesCommand extends Command
      */
     private $scalingProfiles;
 
-    public function __construct(array $defaults, array $environments, array $scalingProfiles)
-    {
+    public function __construct(
+        array $defaults,
+        array $environments,
+        array $scalingProfiles
+    ) {
         $this->defaults = $defaults;
         $this->environments = $environments;
         $this->scalingProfiles = $scalingProfiles;
@@ -56,7 +59,10 @@ class ListTemplatesCommand extends Command
     {
         $this
             ->setName('stack-manager:list-templates')
-            ->setDescription('List all available templates, their environments and their scaling profiles')
+            ->setDescription(
+                'List all available templates, their environments and their'
+                . ' scaling profiles'
+            )
             ;
     }
 

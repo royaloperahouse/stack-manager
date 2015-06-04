@@ -39,23 +39,24 @@ class StackApiMapper
     }
 
     /**
-     * Create a Stack model from the specified stack using the AWS CloudFormation API.
+     * Create a Stack model from the specified stack using the CloudFormation API.
      *
      * @param string $name Name of stack to create the stack model from.
      * @return Stack Model representing the stack.
      */
     public function create($name)
     {
-        $stack = $this->createFromApiResponse(current($this->cloudFormation->DescribeStacks([
+        $response = $this->cloudFormation->DescribeStacks([
             'StackName' => $name,
-        ])->get('Stacks')));
+        ]);
+        $stack = $this->createFromApiResponse(current($response->get('Stacks')));
 
         return $stack;
     }
 
     /**
      * Get Stack models for all stacks with an appropriate template and
-     * environment tag using the AWS CloudFormation API.
+     * environment tag using the CloudFormation API.
      *
      * @return array Stack models
      */

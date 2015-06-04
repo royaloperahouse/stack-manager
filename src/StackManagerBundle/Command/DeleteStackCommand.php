@@ -37,8 +37,10 @@ class DeleteStackCommand extends Command
      */
     private $stackManager;
 
-    public function __construct(StackApiMapper $apiStackMapper, StackManagerService $stackManager)
-    {
+    public function __construct(
+        StackApiMapper $apiStackMapper,
+        StackManagerService $stackManager
+    ) {
         $this->apiStackMapper = $apiStackMapper;
         $this->stackManager = $stackManager;
         parent::__construct();
@@ -74,7 +76,9 @@ class DeleteStackCommand extends Command
         $name = $input->getArgument('name');
 
         if (!$input->getOption('really')) {
-            throw new InvalidArgumentException('Will not delete a stack without the "--really" flag');
+            throw new InvalidArgumentException(
+                'Will not delete a stack without the "--really" flag'
+            );
         }
 
         $stack = $this->apiStackMapper->create($name);

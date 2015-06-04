@@ -86,7 +86,12 @@ class PreviewStackCommand extends Command
         $scalingProfile = $input->getOption('scaling-profile');
         $name = $input->getOption('name');
 
-        $stack = $this->configStackMapper->create($template, $environment, $scalingProfile, $name);
+        $stack = $this->configStackMapper->create(
+            $template,
+            $environment,
+            $scalingProfile,
+            $name
+        );
 
         $output->writeLn('<info>Template</info>');
         $output->write($stack->getTemplate()->getBodyJSON());
