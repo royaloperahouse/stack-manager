@@ -13,6 +13,7 @@ namespace ROH\Bundle\StackManagerBundle\Command;
 
 use ROH\Bundle\StackManagerBundle\Mapper\StackConfigMapper;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -91,13 +92,19 @@ class PreviewStackCommand extends Command
         $output->write($stack->getTemplate()->getBodyJSON());
 
         $output->writeLn('<info>Parameters:</info>');
+        $table = new Table($output);
+        $table->setHeaders(['Name', 'Value']);
         foreach ($stack->getParameters() as $name => $value) {
-            $output->writeLn($name . ' = ' . $value);
+            $table->addRow([$name, $value]);
         }
+        $table->render();
 
         $output->writeLn('<info>Tags:</info>');
-        foreach ($stack->getTags() as $name => $value) {
-            $output->writeLn($name . ' = ' . $value);
+        $table = new Table($output);
+        $table->setHeaders(['Key', 'Value']);
+        foreach ($stack->getTags() as $key => $value) {
+            $table->addRow([$key, $value]);
         }
+        $table->render();
     }
 }
