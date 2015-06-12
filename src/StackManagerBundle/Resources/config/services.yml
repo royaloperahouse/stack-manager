@@ -101,6 +101,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    roh_stack_manager.twig.ec2:
+        class:  ROH\Bundle\StackManagerBundle\TwigExtension\Ec2TwigExtension
+        arguments:
+            - @platinum_pixs_aws.base
+        tags:
+            - { name: twig.extension }
+
     roh_stack_manager.twig.rds:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\RdsTwigExtension
         arguments:
