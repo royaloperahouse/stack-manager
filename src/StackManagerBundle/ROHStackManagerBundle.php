@@ -3,7 +3,7 @@
 /*
  * This file is part of the Stack Manager package.
  *
- * (c) Royal Opera House Covent Garden Foundation <website@roh.org.uk>
+ * © Royal Opera House Covent Garden Foundation <website@roh.org.uk>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
