@@ -118,6 +118,6 @@ At the moment, only Google Calendar feeds are supported.
 
 ## About
 
-Stack Manager was created by the [Royal Opera House](http://www.roh.org.uk/) for internal use and is made available for the benefit of the community under the [MIT License](LICENSE).
+Stack Manager was created by the [Royal Opera House](http://www.roh.org.uk/digital) for internal use and is made available for the benefit of the community under the [MIT License](LICENSE).
 
 Pull requests are welcomed and will be responded to promptly.
