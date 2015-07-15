@@ -16,6 +16,7 @@ use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
 use RuntimeException;
+use Seld\JsonLint\JsonParser;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
@@ -100,7 +101,7 @@ class StackConfigMapper
             $this->scalingProfileParameters[$template][$scalingProfile]
         );
 
-        $body = json_decode($this->templating->render(
+        $body = (new JsonParser)->parse($this->templating->render(
             sprintf('%s.json.twig', $template),
             [
                 'environment' => $environment,
@@ -109,12 +110,6 @@ class StackConfigMapper
                 'rootStackName' => $name,
             ]
         ));
-        if ($body === null && json_last_error()) {
-            throw new RuntimeException(sprintf(
-                'Template body could not be decoded as JSON, error: %s',
-                json_last_error_msg()
-            ));
-        }
 
         $stack = new Stack(
             $name,
