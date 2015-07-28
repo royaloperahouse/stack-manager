@@ -73,17 +73,8 @@ class EbsTwigExtension extends Twig_Extension
             ],
         ]);
 
-        $snapshots = $response['Snapshots'];
-        if (!$snapshots) {
-            throw new RuntimeException(sprintf(
-                'No snapshots returned for volume id "%s" by the EC2 API',
-                $volumeId
-            ));
-        }
-
-        return end($snapshots)['SnapshotId'];
+        return $this->getLatestEbsVolumeSnapshotFromResponse($response);
     }
-
 
     /**
      * {@inheritdoc}
@@ -91,5 +82,43 @@ class EbsTwigExtension extends Twig_Extension
     public function getName()
     {
         return 'roh_ebs';
+    }
+
+    /**
+     * Take a DescribeSnapshots API response and find the latest snapshot from
+     * the returned data.
+     *
+     * @throws RuntimeException If no completed snapshtos are found in the
+     *     response.
+     * @param array $response Response from the DescribeSnapshots API call.
+     * @return string Latest snapshot id.
+     */
+    private function getLatestEbsVolumeSnapshotFromResponse($response)
+    {
+        if (!$response['Snapshots']) {
+            throw new RuntimeException(sprintf(
+                'No snapshots returned for volume id "%s" by the EC2 API',
+                $volumeId
+            ));
+        }
+
+        $snapshots = [];
+        foreach ($response['Snapshots'] as $snapshot) {
+            if ($snapshot['State'] !== 'completed') {
+                continue;
+            }
+
+            $snapshots[$snapshot['SnapshotId']] = strtotime($snapshot['StartTime']);
+        }
+        asort($snapshots);
+
+        if (count($snapshots) === 0) {
+            throw new RuntimeException(sprintf(
+                'No completed snapshots returned for volume id "%s" by the EC2 API',
+                $volumeId
+            ));
+        }
+
+        return end(array_keys($snapshots));
     }
 }

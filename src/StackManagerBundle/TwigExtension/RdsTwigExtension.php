@@ -60,13 +60,12 @@ class RdsTwigExtension extends Twig_Extension
     }
 
     /**
-     * Return the latest automated DB snapshot for a given RDS DB instance
+     * Return the latest available DB snapshot for a given RDS DB instance
      * identifier.
      *
      * @param string $instanceIdentifier Identifier of the DB instance to get
      *     the snapshot identifier for.
-     * @return string Latest automated snapshot identifier of the specified DB
-     *     instance.
+     * @return string Latest snapshot identifier of the specified DB instance.
      */
     public function getLatestRdsSnapshot($instanceIdentifier)
     {
@@ -79,18 +78,9 @@ class RdsTwigExtension extends Twig_Extension
 
         $response = $this->rds->describeDBSnapshots([
             'DBInstanceIdentifier' => $instanceIdentifier,
-            'SnapshotType' => 'automated',
         ]);
 
-        $snapshots = $response['DBSnapshots'];
-        if (!$snapshots) {
-            throw new RuntimeException(sprintf(
-                'No snapshots returned for DB instance "%s" by the RDS API',
-                $instanceIdentifier
-            ));
-        }
-
-        return end($snapshots)['DBSnapshotIdentifier'];
+        return $this->getLatestRdsSnapshotFromResponse($response);
     }
 
     /**
@@ -134,5 +124,43 @@ class RdsTwigExtension extends Twig_Extension
     public function getName()
     {
         return 'roh_rds';
+    }
+
+    /**
+     * Take a DescribeDBSnapshots API response and find the latest snapshot from
+     * the returned data.
+     *
+     * @throws RuntimeException If no available snapshtos are found in the
+     *     response.
+     * @param array $response Response from the DescribeDBSnapshots API call.
+     * @return string Latest snapshot id.
+     */
+    private function getLatestRdsSnapshotFromResponse($response)
+    {
+        if (!$response['DBSnapshots']) {
+            throw new RuntimeException(sprintf(
+                'No snapshots returned for DB instance "%s" by the RDS API',
+                $volumeId
+            ));
+        }
+
+        $snapshots = [];
+        foreach ($response['DBSnapshots'] as $snapshot) {
+            if ($snapshot['Status'] !== 'available') {
+                continue;
+            }
+
+            $snapshots[$snapshot['DBSnapshotIdentifier']] = strtotime($snapshot['SnapshotCreateTime']);
+        }
+        asort($snapshots);
+
+        if (count($snapshots) === 0) {
+            throw new RuntimeException(sprintf(
+                'No available snapshots returned for DB instance "%s" by the RDS API',
+                $volumeId
+            ));
+        }
+
+        return end(array_keys($snapshots));
     }
 }
