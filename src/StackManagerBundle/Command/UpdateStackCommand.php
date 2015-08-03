@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to update an existing stack
+ * Command to update an existing stack.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */

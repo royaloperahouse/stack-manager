@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to list all stacks managed by the stack manager
+ * Command to list all stacks managed by the stack manager.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -59,7 +59,7 @@ class ListStacksCommand extends Command
             $table->addRow([
                 $stack->getName(),
                 $stack->getStatus(),
-                $stack->getLastUpdatedTime()->format('c')
+                $stack->getLastUpdatedTime()->format('c'),
             ]);
         }
 

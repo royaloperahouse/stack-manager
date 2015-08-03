@@ -15,13 +15,12 @@ use InvalidArgumentException;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
-use RuntimeException;
 use Seld\JsonLint\JsonParser;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Mapper to create stack models from the configuration and templates in the
- * stack manager application
+ * stack manager application.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -101,7 +100,7 @@ class StackConfigMapper
             $this->scalingProfileParameters[$template][$scalingProfile]
         );
 
-        $body = (new JsonParser)->parse($this->templating->render(
+        $body = (new JsonParser())->parse($this->templating->render(
             sprintf('%s.json.twig', $template),
             [
                 'environment' => $environment,

@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to preview the template, parameters and tags of a new stack
+ * Command to preview the template, parameters and tags of a new stack.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */

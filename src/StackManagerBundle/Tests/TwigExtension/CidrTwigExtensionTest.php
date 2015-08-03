@@ -9,7 +9,7 @@ class CidrTwigExtensionTest extends PHPUnit_Framework_TestCase
 {
     public function testBasicUsage()
     {
-        $ext = new CidrTwigExtension;
+        $ext = new CidrTwigExtension();
         $this->assertEquals(
             '10.0.0.0/16',
             $ext->cidr('10.0.0.0/16', 16)
@@ -22,7 +22,7 @@ class CidrTwigExtensionTest extends PHPUnit_Framework_TestCase
           'Exception', '/The size of the desired block exceeds the size of the container block.*/'
         );
 
-        $ext = new CidrTwigExtension;
+        $ext = new CidrTwigExtension();
         $ext->cidr('10.0.0.0/24', 16);
     }
 
@@ -63,7 +63,7 @@ class CidrTwigExtensionTest extends PHPUnit_Framework_TestCase
             32 => '255.255.255.254/32',
         ];
 
-        $ext = new CidrTwigExtension;
+        $ext = new CidrTwigExtension();
         foreach ($results as $prefixSize => $cidr) {
             $this->assertEquals(
                 $cidr,

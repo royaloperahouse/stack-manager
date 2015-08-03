@@ -14,7 +14,7 @@ namespace ROH\Bundle\StackManagerBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Stack Manager bundle
+ * Stack Manager bundle.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */

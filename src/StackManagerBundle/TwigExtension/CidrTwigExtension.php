@@ -29,7 +29,7 @@ class CidrTwigExtension extends Twig_Extension
 {
     /**
      * An array of container blocks, and the minimum IP address that desired
-     * blocks may be generated from them.  E.g. ['172.31.1.0/16' => 2887713040]
+     * blocks may be generated from them.  E.g. ['172.31.1.0/16' => 2887713040].
      *
      * @var array
      */
@@ -60,7 +60,7 @@ class CidrTwigExtension extends Twig_Extension
 
         // Normalise the container block (e.g. 172.31.0.5/24 becomes 172.31.0.0/24).
         $containerBlockPrefix = $this->getPrefix($containerBlockPrefix, $containerBlockNetmask);
-        $containerBlock = long2ip($containerBlockPrefix) . '/' . $containerBlockPrefixSize;
+        $containerBlock = long2ip($containerBlockPrefix).'/'.$containerBlockPrefixSize;
 
         // If the specified container block has not been used before, record
         // the minimum IP address of it as the prefix of the container block.
@@ -75,8 +75,8 @@ class CidrTwigExtension extends Twig_Extension
         if ($desiredBlockBroadcast > $containerBlockBroadcast) {
             throw new Exception(sprintf(
                 "The size of the desired block exceeds the size of the container block.\n"
-                    . "  Container CIDR: %s/%d (%s -> %s)\n"
-                    . "  Desired CIDR: %s/%d (%s -> %s)",
+                    ."  Container CIDR: %s/%d (%s -> %s)\n"
+                    .'  Desired CIDR: %s/%d (%s -> %s)',
                 long2ip($containerBlockPrefix),
                 $containerBlockPrefixSize,
                 long2ip($containerBlockPrefix),
@@ -92,14 +92,14 @@ class CidrTwigExtension extends Twig_Extension
         // broadcast address of the desired block, plus one.
         $this->minimumIpInContainerBlock[$containerBlock] = $desiredBlockBroadcast + 1;
 
-        return long2ip($desiredBlockPrefix) . '/' . $desiredBlockPrefixSize;
+        return long2ip($desiredBlockPrefix).'/'.$desiredBlockPrefixSize;
     }
 
     /**
      * Convert a prefix size (e.g. 16) to a subnet mask (e.g. 0xFFFF0000).
      *
-     * @param integer $prefixSize
-     * @return integer
+     * @param int $prefixSize
+     * @return int
      */
     private function prefixSizeToNetmask($prefixSize)
     {
@@ -110,9 +110,9 @@ class CidrTwigExtension extends Twig_Extension
      * For a given IP address and netmask, get the prefix of that range (the
      * first IP address).
      *
-     * @param integer $ip
-     * @param integer $netmask
-     * @return integer
+     * @param int $ip
+     * @param int $netmask
+     * @return int
      */
     private function getPrefix($ip, $netmask)
     {
@@ -123,9 +123,9 @@ class CidrTwigExtension extends Twig_Extension
      * For a given IP address and netmask, get the broadcast address of that
      * range (the last IP address).
      *
-     * @param integer $ip
-     * @param integer $netmask
-     * @return integer
+     * @param int $ip
+     * @param int $netmask
+     * @return int
      */
     private function getBroadcast($ip, $netmask)
     {

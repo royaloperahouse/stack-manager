@@ -36,7 +36,7 @@ class ROHStackManagerExtension extends Extension
         // 'app/Resources/config/*.yml.  Merge them together manually to avoid
         // them being mangled.
         $stackManagerConfig = [];
-        $path = $container->getParameter('kernel.root_dir') . '/Resources/config';
+        $path = $container->getParameter('kernel.root_dir').'/Resources/config';
         $finder = Finder::create()->files()->name('*.yml')->in($path);
         foreach ($finder as $file) {
             $config = Yaml::parse($file->getPathname());
@@ -55,14 +55,13 @@ class ROHStackManagerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         foreach ($config as $key => $value) {
-            $container->setParameter('roh_stack_manager.' . $key, $value);
+            $container->setParameter('roh_stack_manager.'.$key, $value);
         }
 
         $loader = new Loader\YamlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
+            new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yml');
-
     }
 }

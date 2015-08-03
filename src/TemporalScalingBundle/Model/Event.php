@@ -74,7 +74,7 @@ class Event
     /**
      * Duration of the event in seconds.
      *
-     * @return integer Number of seconds between the start and end of the event.
+     * @return int Number of seconds between the start and end of the event.
      */
     public function getDuration()
     {

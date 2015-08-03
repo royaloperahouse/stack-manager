@@ -20,7 +20,7 @@ use ROH\Bundle\StackManagerBundle\Model\Template;
 use ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService;
 
 /**
- * Mapper to create stack models from the CloudFormation API
+ * Mapper to create stack models from the CloudFormation API.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -137,7 +137,7 @@ class StackApiMapper
         // we have a complete representation of the stack.
         $templateExpansionService = $this->templateExpansionService;
         $cloudFormation = $this->cloudFormation;
-        $templateBodyCallback = function() use ($name, $templateExpansionService, $cloudFormation) {
+        $templateBodyCallback = function () use ($name, $templateExpansionService, $cloudFormation) {
             return $templateExpansionService->getExpandedTemplateBody(
                 $cloudFormation->GetTemplate([
                     'StackName' => $name,

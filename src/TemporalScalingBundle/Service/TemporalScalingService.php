@@ -15,7 +15,6 @@ use Psr\Log;
 use ROH\Bundle\StackManagerBundle\Mapper\StackConfigMapper;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Service\StackManagerService;
-use ROH\Bundle\StackManagerBundle\Service\StackComparisonService;
 use ROH\Bundle\TemporalScalingBundle\Model\Event;
 
 /**
@@ -56,7 +55,7 @@ class TemporalScalingService
      * @param Stack $stack Model of stack to update.
      * @param Event|null $event Model of event specifying the scaling profile,
      *     or null to use the default profile.
-     * @return boolean Whether the stack has been updated.
+     * @return bool Whether the stack has been updated.
      */
     public function scale(Stack $stack, Event $event = null)
     {

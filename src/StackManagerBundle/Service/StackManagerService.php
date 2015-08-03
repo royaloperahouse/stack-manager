@@ -13,7 +13,6 @@ namespace ROH\Bundle\StackManagerBundle\Service;
 
 use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
-use ROH\Bundle\StackManagerBundle\Service\TemplateSquashingService;
 
 /**
  * Service to manage stacks via the CloudFormation API.
@@ -60,7 +59,6 @@ class StackManagerService
      * CloudFormation API.
      *
      * @param Stack $stack Model of the stack to update.
-     * @return void
      */
     public function update(Stack $stack)
     {
@@ -76,7 +74,6 @@ class StackManagerService
      * Delete the stack represented by the supplied model using the CloudFormation API.
      *
      * @param Stack $stack Model of the stack to delete.
-     * @return void
      */
     public function delete(Stack $stack)
     {

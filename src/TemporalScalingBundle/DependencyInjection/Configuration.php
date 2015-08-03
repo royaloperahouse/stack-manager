@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration tree for the temporal scaling bundle
+ * Configuration tree for the temporal scaling bundle.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */

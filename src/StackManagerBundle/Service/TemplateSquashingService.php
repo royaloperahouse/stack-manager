@@ -41,7 +41,6 @@ class TemplateSquashingService
     /**
      * @param AwsClient $awsClient AWS API client
      * @param string $s3BucketName Name of S3 bucket to upload templates to.
-     * @return void
      */
     public function __construct(AwsClient $awsClient, $s3BucketName)
     {
@@ -125,7 +124,7 @@ class TemplateSquashingService
             'Template body encoded as JSON must contain no more than 307,200 characters'
         );
 
-        $file = hash(self::OBJECT_KEY_HASH_ALGORITHM, $json) . '.json';
+        $file = hash(self::OBJECT_KEY_HASH_ALGORITHM, $json).'.json';
 
         $response = $this->s3->PutObject([
             'Bucket' => $this->s3BucketName,

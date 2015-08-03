@@ -11,7 +11,6 @@
 
 namespace ROH\Bundle\StackManagerBundle\Service;
 
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
 use RuntimeException;
 use stdClass;
 

@@ -35,7 +35,7 @@ class StackComparisonService
         Parameters $parametersA,
         Parameters $parametersB
     ) {
-        /**
+        /*
          * Convert the parameters object to a numerically indexed array of
          * strings representing each of the parameters (name and value).
          *
@@ -45,7 +45,7 @@ class StackComparisonService
         $parametersToList = function ($parameters) {
             $list = [];
             foreach ($parameters as $key => $value) {
-                $list[] = $key . ' = ' . $value;
+                $list[] = $key.' = '.$value;
             }
 
             return $list;
@@ -57,7 +57,7 @@ class StackComparisonService
             []
         );
 
-        return $diff->render(new Diff_Renderer_Text_Unified);
+        return $diff->render(new Diff_Renderer_Text_Unified());
     }
 
     /**
@@ -78,6 +78,6 @@ class StackComparisonService
             []
         );
 
-        return $diff->render(new Diff_Renderer_Text_Unified);
+        return $diff->render(new Diff_Renderer_Text_Unified());
     }
 }

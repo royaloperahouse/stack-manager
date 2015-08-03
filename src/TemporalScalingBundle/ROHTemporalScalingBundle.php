@@ -14,7 +14,7 @@ namespace ROH\Bundle\TemporalScalingBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Temporal Scaling bundle
+ * Temporal Scaling bundle.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */

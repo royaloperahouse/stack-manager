@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * Load configuration for the temporal sclaing bundle
+ * Load configuration for the temporal sclaing bundle.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -34,7 +34,7 @@ class ROHTemporalScalingExtension extends Extension
         // Load stack manager configuration in to parameters for access via the
         // dependency injection container.
         foreach ($config as $key => $value) {
-            $container->setParameter('roh_temporal_scaling.' . $key, $value);
+            $container->setParameter('roh_temporal_scaling.'.$key, $value);
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

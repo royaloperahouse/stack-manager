@@ -14,13 +14,11 @@ namespace ROH\Bundle\StackManagerBundle\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to list all available templates
+ * Command to list all available templates.
  *
  * @author Robert Leverington <robert.leverington@roh.org.uk>
  */
@@ -61,7 +59,7 @@ class ListTemplatesCommand extends Command
             ->setName('stack-manager:list-templates')
             ->setDescription(
                 'List all available templates, their environments and their'
-                . ' scaling profiles'
+                .' scaling profiles'
             )
             ;
     }
@@ -96,16 +94,16 @@ class ListTemplatesCommand extends Command
 
         $i = 0;
         foreach ($templates as $name => $data) {
-            $i++;
+            ++$i;
 
             $table->addRow([
                 $name,
                 implode("\n", $data['environments']),
-                implode("\n", $data['scalingProfiles'])
+                implode("\n", $data['scalingProfiles']),
             ]);
 
             if ($i !== count($templates)) {
-                $table->addRow(new TableSeparator);
+                $table->addRow(new TableSeparator());
             }
         }
         $table->render();

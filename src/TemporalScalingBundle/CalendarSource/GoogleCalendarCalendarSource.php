@@ -42,13 +42,13 @@ class GoogleCalendarCalendarSource extends AbstractCalendarSource
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getCurrentEvents($calendarId)
     {
-            $client = new Google_Client;
-            $client->setApplicationName($this->applicationName);
-            $client->setDeveloperKey($this->developerKey);
+        $client = new Google_Client();
+        $client->setApplicationName($this->applicationName);
+        $client->setDeveloperKey($this->developerKey);
 
             // Force the timezone here to ensure there is no discrepency
             // between the default timezone and the calendar timezone.
@@ -59,36 +59,36 @@ class GoogleCalendarCalendarSource extends AbstractCalendarSource
             // occurring at this exact second) search between now and now + one
             // second.
             $timeMin = new DateTime('now', $timezone);
-            $timeMax = new DateTime('+1 second', $timezone);
+        $timeMax = new DateTime('+1 second', $timezone);
 
-            $service = new Google_Service_Calendar($client);
-            $response = $service->events->listEvents($calendarId, [
+        $service = new Google_Service_Calendar($client);
+        $response = $service->events->listEvents($calendarId, [
                 'singleEvents' => true,
                 'timeMin' => $timeMin->format('c'),
                 'timeMax' => $timeMax->format('c'),
                 'timeZone' => $timezone->getName(),
             ]);
 
-            $events = [];
-            foreach ($response->getItems() as $item) {
-                $events[] = new Event(
+        $events = [];
+        foreach ($response->getItems() as $item) {
+            $events[] = new Event(
                     $item->getSummary(),
                     new DateTime($item->getStart()->getDateTime(), $timezone),
                     new DateTime($item->getEnd()->getDateTime(), $timezone)
                 );
-            }
+        }
 
             // Sort events by duration ascending.
-            usort($events, function($a, $b) {
+            usort($events, function ($a, $b) {
                 return ($a->getDuration() < $b->getDuration()) ? -1 : 1;
             });
 
-            $this->logger->debug(sprintf(
+        $this->logger->debug(sprintf(
                 'Found %d current events in calendar "%s"',
                 count($events),
                 $calendarId
             ));
 
-            return $events;
+        return $events;
     }
 }

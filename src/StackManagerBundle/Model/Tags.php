@@ -25,7 +25,7 @@ use PHPUnit_Framework_Assert;
 class Tags implements Iterator
 {
     /**
-     * @var integer
+     * @var int
      */
     private $position = 0;
 
@@ -41,7 +41,7 @@ class Tags implements Iterator
 
     /**
      * @var array
-      */
+     */
     public function __construct(array $tags)
     {
         PHPUnit_Framework_Assert::assertLessThanOrEqual(

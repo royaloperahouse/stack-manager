@@ -21,7 +21,7 @@ use Iterator;
 class Parameters implements Iterator
 {
     /**
-     * @var integer
+     * @var int
      */
     private $position = 0;
 
