@@ -12,7 +12,7 @@
 namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
 use InvalidArgumentException;
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
+use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -29,7 +29,10 @@ class Ec2TwigExtension extends Twig_Extension
      */
     protected $ec2;
 
-    public function __construct(AwsClient $awsClient)
+    /**
+     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
+     */
+    public function __construct(Guzzle\Service\Builder\ServiceBuilder $awsClient)
     {
         $this->ec2 = $awsClient->get('ec2');
     }
@@ -82,16 +85,7 @@ class Ec2TwigExtension extends Twig_Extension
             ],
         ]);
 
-        $images = $response['Images'];
-        if (!$images) {
-            throw new RuntimeException(sprintf(
-                'No images returned for owner alias "%s" and description "%s" by the EC2 API',
-                $ownerId,
-                $description
-            ));
-        }
-
-        return end($images)['ImageId'];
+        return $this->getLatestEc2ImageFromResponse($response);
     }
 
 
@@ -101,5 +95,37 @@ class Ec2TwigExtension extends Twig_Extension
     public function getName()
     {
         return 'roh_ec2';
+    }
+
+    /**
+     * Take a DescribeImages API response and find the latest available image
+     * from the returned data.
+     *
+     * @throws RuntimeException If no available images are found in the response.
+     * @param Guzzle\Service\Resource\Model $response Response from the
+     *     DescribeImages API call.
+     * @return string Latest image id.
+     */
+    private function getLatestEc2ImageFromResponse(Guzzle\Service\Resource\Model $response)
+    {
+        if (!$response['Images']) {
+            throw new RuntimeException('No images returned in the EC2 API response');
+        }
+
+        $images = [];
+        foreach ($response['Images'] as $image) {
+            if ($image['State'] !== 'available') {
+                continue;
+            }
+
+            $images[$image['ImageId']] = strtotime($image['CreationDate']);
+        }
+        asort($images);
+
+        if (count($images) === 0) {
+            throw new RuntimeException('No available images returned in the EC2 API response');
+        }
+
+        return end(array_keys($images));
     }
 }

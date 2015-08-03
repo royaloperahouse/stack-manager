@@ -13,7 +13,7 @@ namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
 use Aws\Rds;
 use InvalidArgumentException;
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
+use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -40,8 +40,14 @@ class RdsTwigExtension extends Twig_Extension
      */
     protected $region;
 
-    public function __construct(AwsClient $awsClient, $awsRegion)
-    {
+    /**
+     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
+     * @param string $awsRegion AWS region to use for API calls.
+     */
+    public function __construct(
+        Guzzle\Service\Builder\ServiceBuilder $awsClient,
+        $awsRegion
+    ) {
         $this->rds = $awsClient->get('rds');
         // The IAM API is only available in us-east-1.
         $this->iam = $awsClient->get('iam', ['region' => 'us-east-1']);
@@ -132,16 +138,14 @@ class RdsTwigExtension extends Twig_Extension
      *
      * @throws RuntimeException If no available snapshtos are found in the
      *     response.
-     * @param array $response Response from the DescribeDBSnapshots API call.
+     * @param Guzzle\Service\Resource\Model $response Response from the
+     *     DescribeDBSnapshots API call.
      * @return string Latest snapshot id.
      */
-    private function getLatestRdsSnapshotFromResponse($response)
+    private function getLatestRdsSnapshotFromResponse(Guzzle\Service\Resource\Model $response)
     {
         if (!$response['DBSnapshots']) {
-            throw new RuntimeException(sprintf(
-                'No snapshots returned for DB instance "%s" by the RDS API',
-                $volumeId
-            ));
+            throw new RuntimeException('No snapshots returned in the RDS API response');
         }
 
         $snapshots = [];
@@ -155,10 +159,7 @@ class RdsTwigExtension extends Twig_Extension
         asort($snapshots);
 
         if (count($snapshots) === 0) {
-            throw new RuntimeException(sprintf(
-                'No available snapshots returned for DB instance "%s" by the RDS API',
-                $volumeId
-            ));
+            throw new RuntimeException('No available snapshots returned in the RDS API response');
         }
 
         return end(array_keys($snapshots));
