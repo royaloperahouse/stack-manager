@@ -44,6 +44,7 @@ class EbsTwigExtension extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction('getLatestEbsVolumeSnapshot', [$this, 'getLatestEbsVolumeSnapshot']),
+            new Twig_SimpleFunction('getEbsVolumeSourceSnapshot', [$this, 'getEbsVolumeSourceSnapshot']),
         ];
     }
 
@@ -77,6 +78,32 @@ class EbsTwigExtension extends Twig_Extension
         ]);
 
         return $this->getLatestEbsVolumeSnapshotFromResponse($response);
+    }
+
+    /**
+     * Get the source snapshot for a given EBS volume id.
+     *
+     * @param string $volumeId Id of EBS volume to get the source snapshot of.
+     * @return string Source snapshto id of the specified EBS volume.
+     */
+    public function getEbsVolumeSourceSnapshot($volumeId)
+    {
+        if (!strlen($volumeId)) {
+            throw new InvalidArgumentException(sprintf(
+                'Volume id passed to "%s" must be a non-zero length string',
+                __FUNCTION__
+            ));
+        }
+
+        $response = $this->ec2->describeVolumes([
+            'VolumeIds' => [$volumeId],
+        ]);
+
+        if (!count($response['Volumes']) || !$response['Volumes'][0]['SnapshotId']) {
+            return null;
+        }
+
+        return $response['Volumes'][0]['SnapshotId'];
     }
 
     /**

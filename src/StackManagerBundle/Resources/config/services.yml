@@ -94,6 +94,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    roh_stack_manager.twig.cloudformation:
+        class:  ROH\Bundle\StackManagerBundle\TwigExtension\CloudFormationTwigExtension
+        arguments:
+            - @platinum_pixs_aws.base
+        tags:
+            - { name: twig.extension }
+
     roh_stack_manager.twig.ebs:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\EbsTwigExtension
         arguments:
