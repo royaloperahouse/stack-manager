@@ -30,7 +30,7 @@ class Ec2TwigExtension extends Twig_Extension
     protected $ec2;
 
     /**
-     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client
+     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
      */
     public function __construct(Guzzle\Service\Builder\ServiceBuilder $awsClient)
     {

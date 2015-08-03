@@ -12,7 +12,7 @@
 namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
 use InvalidArgumentException;
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
+use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -29,7 +29,10 @@ class EbsTwigExtension extends Twig_Extension
      */
     protected $ec2;
 
-    public function __construct(AwsClient $awsClient)
+    /**
+     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
+     */
+    public function __construct(Guzzle\Service\Builder\ServiceBuilder $awsClient)
     {
         $this->ec2 = $awsClient->get('ec2');
     }
@@ -88,18 +91,16 @@ class EbsTwigExtension extends Twig_Extension
      * Take a DescribeSnapshots API response and find the latest snapshot from
      * the returned data.
      *
-     * @throws RuntimeException If no completed snapshtos are found in the
+     * @throws RuntimeException If no completed snapshots are found in the
      *     response.
-     * @param array $response Response from the DescribeSnapshots API call.
+     * @param Guzzle\Service\Resource\Model $response Response from the
+     *     DescribeSnapshots API call.
      * @return string Latest snapshot id.
      */
-    private function getLatestEbsVolumeSnapshotFromResponse($response)
+    private function getLatestEbsVolumeSnapshotFromResponse(Guzzle\Service\Resource\Model $response)
     {
         if (!$response['Snapshots']) {
-            throw new RuntimeException(sprintf(
-                'No snapshots returned for volume id "%s" by the EC2 API',
-                $volumeId
-            ));
+            throw new RuntimeException('No snapshots returned in the EC2 API response');
         }
 
         $snapshots = [];
@@ -113,10 +114,7 @@ class EbsTwigExtension extends Twig_Extension
         asort($snapshots);
 
         if (count($snapshots) === 0) {
-            throw new RuntimeException(sprintf(
-                'No completed snapshots returned for volume id "%s" by the EC2 API',
-                $volumeId
-            ));
+            throw new RuntimeException('No completed snapshots returned in the the EC2 API');
         }
 
         return end(array_keys($snapshots));
