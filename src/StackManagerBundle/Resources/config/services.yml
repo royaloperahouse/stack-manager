@@ -95,6 +95,8 @@ services:
 
     roh_stack_manager.service.template_expansion:
         class: ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService
+        arguments:
+            - @buzz
 
     roh_stack_manager.twig.cidr:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\CidrTwigExtension

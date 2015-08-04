@@ -13,6 +13,7 @@ namespace ROH\Bundle\StackManagerBundle\Model;
 
 use Closure;
 use RuntimeException;
+use Symfony\Component\Serializer;
 use stdClass;
 
 /**
@@ -85,13 +86,11 @@ class Template
      */
     public function getBodyJSON()
     {
-        $json = json_encode($this->getBody(), self::JSON_OPTIONS);
-        if ($json === false) {
-            throw new RuntimeException(sprintf(
-                'Template body could not be encoded as JSON, error: %s',
-                json_last_error_msg()
-            ));
-        }
+        $json = (new Serializer\Encoder\JsonEncode)->encode(
+            $this->getBody(),
+            Serializer\Encoder\JsonEncoder::FORMAT,
+            ['json_encode_options' => Template::JSON_OPTIONS]
+        );
 
         // Ensure there is a trailing new line to improve output on the console.
         $json .= "\n";

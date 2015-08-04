@@ -14,7 +14,7 @@ namespace ROH\Bundle\StackManagerBundle\Service;
 use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
 use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Template;
-use RuntimeException;
+use Symfony\Component\Serializer;
 use stdClass;
 
 /**
@@ -103,18 +103,15 @@ class TemplateSquashingService
      * providing the template doesn't change.
      *
      * @param stdClass $template Template object to upload
-     * @throws RuntimeException If the template body cannot be encoded as JSON.
      * @return string URL of template in S3.
      */
     public function uploadTemplate(stdClass $template)
     {
-        $json = json_encode($template, Template::JSON_OPTIONS);
-        if ($json === false) {
-            throw new RuntimeException(sprintf(
-                'Template body could not be encoded as JSON, error: %s',
-                json_last_error_msg()
-            ));
-        }
+        $json = (new Serializer\Encoder\JsonEncode)->encode(
+            $template,
+            Serializer\Encoder\JsonEncoder::FORMAT,
+            ['json_encode_options' => Template::JSON_OPTIONS]
+        );
 
         // Always append a new line to the JSON to improve output on the console.
         $json .= "\n";
