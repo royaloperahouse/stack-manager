@@ -185,4 +185,20 @@ class Stack
     {
         return $this->lastUpdatedTime;
     }
+
+    /**
+     * Check if this stack is identical to the supplied stack object (i.e. has
+     * the same template body and parrameters).
+     *
+     * @param Stack $stack Stack to compare this stack to.
+     * @return boolean Whether the two stacks objects are identical.
+     */
+    public function isIdentical(self $stack)
+    {
+        return (
+            $this->getTemplate()->isIdentical($stack->getTemplate())
+            && $this->getParameters()->isIdentical($stack->getParameters())
+            && $this->getTags()->isIdentical($stack->getTags())
+        );
+    }
 }

@@ -98,4 +98,12 @@ class Template
 
         return $json;
     }
+
+    public function isIdentical(self $template)
+    {
+        return (
+            $this->getName() === $template->getName()
+            && $this->getBodyJSON() === $template->getBodyJSON()
+        );
+    }
 }
