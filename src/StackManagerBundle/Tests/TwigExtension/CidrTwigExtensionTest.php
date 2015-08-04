@@ -7,6 +7,28 @@ use ROH\Bundle\StackManagerBundle\TwigExtension\CidrTwigExtension;
 
 class CidrTwigExtensionTest extends PHPUnit_Framework_TestCase
 {
+    public function testFilterDefinition()
+    {
+        $expectedFilters = ['cidr'];
+
+        $actualFilters = [];
+        $ext = new CidrTwigExtension();
+        foreach ($ext->getFilters() as $filter) {
+            $actualFilters[] = $filter->getName();
+        }
+
+        sort($expectedFilters);
+        sort($actualFilters);
+
+        $this->assertEquals($actualFilters, $expectedFilters);
+    }
+
+    public function testExtensionName()
+    {
+        $ext = new CidrTwigExtension();
+        $this->assertEquals('roh_cidr', $ext->getName());
+    }
+
     public function testBasicUsage()
     {
         $ext = new CidrTwigExtension();

@@ -47,6 +47,13 @@ services:
         tags:
             - { name: console.command }
 
+    roh_stack_manager.command.check_stacks:
+        class: ROH\Bundle\StackManagerBundle\Command\CheckStacksCommand
+        arguments:
+            - @roh_stack_manager.mapper.stack_api
+            - @roh_stack_manager.mapper.stack_config
+        tags:
+            - { name: console.command }
 
     roh_stack_manager.command.list_templates:
         class: ROH\Bundle\StackManagerBundle\Command\ListTemplatesCommand

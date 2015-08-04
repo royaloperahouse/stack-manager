@@ -74,6 +74,22 @@ class Tags implements Iterator
         return $argument;
     }
 
+    public function isIdentical(self $tags)
+    {
+        return (
+            // The arrays will both be sorted by key so can be compared using a
+            // simple (weak) comparison.
+            $this->toArray() == $tags->toArray()
+        );
+    }
+
+    /* Iterator methods */
+
+    public function toArray()
+    {
+        return $this->tags;
+    }
+
     public function current()
     {
         return $this->tags[$this->key()];
