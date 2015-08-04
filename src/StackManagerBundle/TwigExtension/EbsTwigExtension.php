@@ -144,6 +144,7 @@ class EbsTwigExtension extends Twig_Extension
             throw new RuntimeException('No completed snapshots returned in the the EC2 API');
         }
 
-        return end(array_keys($snapshots));
+        end($snapshots);
+        return key($snapshots);
     }
 }

@@ -126,6 +126,7 @@ class Ec2TwigExtension extends Twig_Extension
             throw new RuntimeException('No available images returned in the EC2 API response');
         }
 
-        return end(array_keys($images));
+        end($images);
+        return key($images);
     }
 }

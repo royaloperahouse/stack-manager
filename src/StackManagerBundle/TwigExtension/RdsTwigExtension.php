@@ -162,6 +162,7 @@ class RdsTwigExtension extends Twig_Extension
             throw new RuntimeException('No available snapshots returned in the RDS API response');
         }
 
-        return end(array_keys($snapshots));
+        end($snapshots);
+        return key($snapshots);
     }
 }
