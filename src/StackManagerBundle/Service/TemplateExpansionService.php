@@ -11,7 +11,8 @@
 
 namespace ROH\Bundle\StackManagerBundle\Service;
 
-use RuntimeException;
+use Buzz;
+use Symfony\Component\Serializer;
 use stdClass;
 
 /**
@@ -23,32 +24,32 @@ use stdClass;
 class TemplateExpansionService
 {
     /**
-     * Number of seconds to allow cURL to download each template.
-     */
-    const TEMPLATE_DOWNLOAD_TIMEOUT = 10;
-
-    /**
      * Resource type name of sub-stacks in a CloudFormation template.
      */
     const SUB_STACK_RESOURCE_TYPE = 'AWS::CloudFormation::Stack';
 
     /**
+     * @var Buzz\Browser
+     */
+    protected $browser;
+
+    public function __construct(Buzz\Browser $browser)
+    {
+        $this->browser = $browser;
+    }
+
+    /**
      * Recursively expand the supplied template body.
      *
      * @param string $body JSON-encoded template body to expand.
-     * @throws RuntimeException If the template body cannot be decoded as JSON.
      * @return string Expanded template body.
      */
     public function getExpandedTemplateBody($body)
     {
-        $body = json_decode($body);
-        if ($body === null && json_last_error()) {
-            throw new RuntimeException(sprintf(
-                'Template body could not be decoded as JSON, error: %s',
-                json_last_error_msg()
-            ));
-        }
-
+        $body = (new Serializer\Encoder\JsonDecode)->decode(
+            $body,
+            Serializer\Encoder\JsonEncoder::FORMAT
+        );
         $this->expandTemplate($body);
 
         return $body;
@@ -91,34 +92,15 @@ class TemplateExpansionService
      * Download the template with the specified URL.
      *
      * @param string $url URL of template to download.
-     * @throws RuntimeException If the template cannot be downloaded.
-     * @throws RuntimeException If the template body cannot be decoded as JSON.
      * @return string Template body.
      */
     public function downloadTemplate($url)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, self::TEMPLATE_DOWNLOAD_TIMEOUT);
-
-        $json = curl_exec($ch);
-        if ($json === false) {
-            throw new RuntimeException(sprintf(
-                'Template could not be downloaded from "%s", cURL error: %s',
-                $url,
-                curl_error()
-            ));
-        }
-
-        $template = json_decode($json);
-        if ($template === null && json_last_error()) {
-            throw new RuntimeException(sprintf(
-                'Template "%s" could not be decoded as JSON, error: %s',
-                $url,
-                json_last_error_msg()
-            ));
-        }
+        $json = $this->browser->get($url)->getContent();
+        $template = (new Serializer\Encoder\JsonDecode)->decode(
+            $json,
+            Serializer\Encoder\JsonEncoder::FORMAT
+        );
 
         return $template;
     }
