@@ -68,7 +68,7 @@ class TemplateTest extends PHPUnit_Framework_TestCase
         $body = new stdClass();
         $body->body = $body;
 
-        $this->setExpectedException('RuntimeException');
+        $this->setExpectedException('UnexpectedValueException');
 
         $template = new Template('foo', $body);
         $template->getBodyJSON();
