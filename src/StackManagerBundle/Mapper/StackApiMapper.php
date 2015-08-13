@@ -68,11 +68,12 @@ class StackApiMapper
         foreach ($response['Stacks'] as $data) {
             $stack = $this->createFromApiResponse($data);
             if ($stack) {
-                $stacks[] = $stack;
+                $stacks[$stack->getName()] = $stack;
             }
         }
+        ksort($stacks);
 
-        return $stacks;
+        return array_values($stacks);
     }
 
     /**
