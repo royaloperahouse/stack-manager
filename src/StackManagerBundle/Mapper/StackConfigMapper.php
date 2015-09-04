@@ -100,6 +100,9 @@ class StackConfigMapper
             $this->scalingProfileParameters[$template][$scalingProfile]
         );
 
+        $parameters['Environment'] = $environment;
+        $parameters['RootStackName'] = $name;
+
         $body = (new JsonParser())->parse($this->templating->render(
             sprintf('%s.json.twig', $template),
             [
