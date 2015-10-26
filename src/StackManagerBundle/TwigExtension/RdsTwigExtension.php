@@ -103,7 +103,7 @@ class RdsTwigExtension extends Twig_Extension
         // Compose the ARN of the DB instance.
         $accountId = explode(':', $this->iam->GetUser()['User']['Arn'])[4];
         $arn = sprintf(
-            'arn:aws:rds:%s:%d:db:%s',
+            'arn:aws:rds:%s:%s:db:%s',
             $this->region,
             $accountId,
             $instanceIdentifier
