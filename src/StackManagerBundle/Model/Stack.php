@@ -187,6 +187,18 @@ class Stack
     }
 
     /**
+     * The only trivial way to detect child stacks is if their name ends in a
+     * token that would be automatically generated (previously, child stacks had
+     * no tags, but this was changed in late 2015).
+     *
+     * @return boolean Whether the stack might be a child stack
+     */
+    public function isChildStack()
+    {
+        return preg_match('#-[A-Z0-9]{12,13}$#', $this->getName());
+    }
+
+    /**
      * Check if this stack is identical to the supplied stack object (i.e. has
      * the same template body and parrameters).
      *

@@ -67,7 +67,7 @@ class StackApiMapper
         $response = $this->cloudFormation->DescribeStacks();
         foreach ($response['Stacks'] as $data) {
             $stack = $this->createFromApiResponse($data);
-            if ($stack) {
+            if ($stack && !$stack->isChildStack()) {
                 $stacks[$stack->getName()] = $stack;
             }
         }
