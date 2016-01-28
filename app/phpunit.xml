@@ -12,15 +12,18 @@
     syntaxCheck                 = "false"
     bootstrap                   = "bootstrap.php.cache" >
 
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>../src/</directory>
+            <exclude>
+                <directory>../src/*/Tests/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
     <testsuites>
         <testsuite name="StackManagerBundle Test Suite">
             <directory>../src/StackManagerBundle/Tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-      <blacklist processUncoveredFilesFromWhitelist="true">
-        <directory suffix=".php">../vendor/</directory>
-      </blacklist>
-    </filter>
 </phpunit>
