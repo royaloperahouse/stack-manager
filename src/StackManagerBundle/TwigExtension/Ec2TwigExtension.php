@@ -73,11 +73,8 @@ class Ec2TwigExtension extends Twig_Extension
         }
 
         $response = $this->ec2->describeImages([
+            'Owners' => [$ownerAlias],
             'Filters' => [
-                [
-                    'Name' => 'owner-alias',
-                    'Values' => [$ownerAlias],
-                ],
                 [
                     'Name' => 'description',
                     'Values' => [$description],
