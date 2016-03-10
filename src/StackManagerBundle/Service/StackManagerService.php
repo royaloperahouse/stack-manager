@@ -44,7 +44,7 @@ class StackManagerService
     {
         $response = $this->cloudFormation->CreateStack([
             'Capabilities' => ['CAPABILITY_IAM'],
-            'OnFaliure' => 'DO_NOTHING',
+            'OnFailure' => 'DO_NOTHING',
             'Parameters' => $stack->getParameters()->toCloudFormationRequestArgument(),
             'StackName' => $stack->getName(),
             'TemplateURL' => $this->templateSquashingService->getSquashedTemplateURL($stack->getTemplate()),
