@@ -11,8 +11,9 @@
 
 namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
+use Aws;
+use Aws\Ec2;
 use InvalidArgumentException;
-use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -25,16 +26,16 @@ use Twig_SimpleFunction;
 class Ec2TwigExtension extends Twig_Extension
 {
     /**
-     * @var Aws\Ec2\Ec2Client
+     * @var Ec2\Ec2Client
      */
-    protected $ec2;
+    protected $ec2Client;
 
     /**
-     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
+     * @param Ec2\Ec2Client $ec2Client AWS client.
      */
-    public function __construct(Guzzle\Service\Builder\ServiceBuilder $awsClient)
+    public function __construct(Ec2\Ec2Client $ec2Client)
     {
-        $this->ec2 = $awsClient->get('ec2');
+        $this->ec2Client = $ec2Client;
     }
 
     /**
@@ -72,7 +73,7 @@ class Ec2TwigExtension extends Twig_Extension
             ));
         }
 
-        $response = $this->ec2->describeImages([
+        $response = $this->ec2Client->describeImages([
             'Owners' => [$ownerAlias],
             'Filters' => [
                 [
@@ -103,7 +104,7 @@ class Ec2TwigExtension extends Twig_Extension
      *     DescribeImages API call.
      * @return string Latest image id.
      */
-    private function getLatestEc2ImageFromResponse(Guzzle\Service\Resource\Model $response)
+    private function getLatestEc2ImageFromResponse(Aws\Result $response)
     {
         if (!$response['Images']) {
             throw new RuntimeException('No images returned in the EC2 API response');

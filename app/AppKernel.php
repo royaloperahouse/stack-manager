@@ -8,11 +8,11 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = [
+            new Aws\Symfony\AwsBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new PlatinumPixs\Aws\PlatinumPixsAwsBundle(),
             new ROH\Bundle\StackManagerBundle\ROHStackManagerBundle(),
             new ROH\Bundle\TemporalScalingBundle\ROHTemporalScalingBundle(),
         ];

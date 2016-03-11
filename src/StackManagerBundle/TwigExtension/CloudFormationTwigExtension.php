@@ -13,7 +13,6 @@ namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
 use Aws\CloudFormation;
 use InvalidArgumentException;
-use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -28,15 +27,15 @@ class CloudFormationTwigExtension extends Twig_Extension
     /**
      * @var CloudFormation\CloudFormationClient
      */
-    protected $cloudFormation;
+    protected $cloudFormationClient;
 
     /**
-     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
+     * @param CloudFormation\CloudFormationClient $awsClient AWS client.
      */
     public function __construct(
-        Guzzle\Service\Builder\ServiceBuilder $awsClient
+        CloudFormation\CloudFormationClient $cloudFormationClient
     ) {
-        $this->cloudFormation = $awsClient->get('cloudformation');
+        $this->cloudFormationClient = $cloudFormationClient;
     }
 
     /**
@@ -76,7 +75,7 @@ class CloudFormationTwigExtension extends Twig_Extension
         }
 
         try {
-            $response = $this->cloudFormation->describeStackResource([
+            $response = $this->cloudFormationClient->describeStackResource([
                 'StackName' => $stackName,
                 'LogicalResourceId' => $resourceName,
             ]);

@@ -11,8 +11,8 @@
 
 namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
+use Aws\Ec2;
 use InvalidArgumentException;
-use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -25,16 +25,16 @@ use Twig_SimpleFunction;
 class EbsTwigExtension extends Twig_Extension
 {
     /**
-     * @var Aws\Ec2\Ec2Client
+     * @var Ec2\Ec2Client
      */
-    protected $ec2;
+    protected $ec2Client;
 
     /**
-     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
+     * @param Ec2\Ec2Client $ec2Client AWS client.
      */
-    public function __construct(Guzzle\Service\Builder\ServiceBuilder $awsClient)
+    public function __construct(Ec2\Ec2Client $ec2Client)
     {
-        $this->ec2 = $awsClient->get('ec2');
+        $this->ec2Client = $ec2Client;
     }
 
     /**
@@ -64,7 +64,7 @@ class EbsTwigExtension extends Twig_Extension
             ));
         }
 
-        $response = $this->ec2->describeSnapshots([
+        $response = $this->ec2Client->describeSnapshots([
             'Filters' => [
                 [
                     'Name' => 'volume-id',
@@ -95,7 +95,7 @@ class EbsTwigExtension extends Twig_Extension
             ));
         }
 
-        $response = $this->ec2->describeVolumes([
+        $response = $this->ec2Client->describeVolumes([
             'VolumeIds' => [$volumeId],
         ]);
 

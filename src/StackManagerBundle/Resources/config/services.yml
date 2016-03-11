@@ -68,7 +68,7 @@ services:
         class: ROH\Bundle\StackManagerBundle\Mapper\StackApiMapper
         arguments:
             - @roh_stack_manager.service.template_expansion
-            - @platinum_pixs_aws.base
+            - @aws.cloudformation
 
     roh_stack_manager.mapper.stack_config:
         class: ROH\Bundle\StackManagerBundle\Mapper\StackConfigMapper
@@ -82,7 +82,7 @@ services:
         class: ROH\Bundle\StackManagerBundle\Service\StackManagerService
         arguments:
             - @roh_stack_manager.service.template_squashing
-            - @platinum_pixs_aws.base
+            - @aws.cloudformation
 
     roh_stack_manager.service.stack_comparison:
         class: ROH\Bundle\StackManagerBundle\Service\StackComparisonService
@@ -90,7 +90,7 @@ services:
     roh_stack_manager.service.template_squashing:
         class: ROH\Bundle\StackManagerBundle\Service\TemplateSquashingService
         arguments:
-            - @platinum_pixs_aws.base
+            - @aws.s3
             - %aws_template_bucket%
 
     roh_stack_manager.service.template_expansion:
@@ -106,28 +106,28 @@ services:
     roh_stack_manager.twig.cloudformation:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\CloudFormationTwigExtension
         arguments:
-            - @platinum_pixs_aws.base
+            - @aws.cloudformation
         tags:
             - { name: twig.extension }
 
     roh_stack_manager.twig.ebs:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\EbsTwigExtension
         arguments:
-            - @platinum_pixs_aws.base
+            - @aws.ec2
         tags:
             - { name: twig.extension }
 
     roh_stack_manager.twig.ec2:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\Ec2TwigExtension
         arguments:
-            - @platinum_pixs_aws.base
+            - @aws.ec2
         tags:
             - { name: twig.extension }
 
     roh_stack_manager.twig.rds:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\RdsTwigExtension
         arguments:
-            - @platinum_pixs_aws.base
-            - %aws_region%
+            - @aws.rds
+            - @aws.iam
         tags:
             - { name: twig.extension }

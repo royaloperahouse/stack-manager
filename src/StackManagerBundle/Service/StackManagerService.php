@@ -11,7 +11,7 @@
 
 namespace ROH\Bundle\StackManagerBundle\Service;
 
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
+use Aws\CloudFormation;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
 
 /**
@@ -21,16 +21,22 @@ use ROH\Bundle\StackManagerBundle\Model\Stack;
  */
 class StackManagerService
 {
-    protected $cloudFormation;
+    /**
+     * @var CloudFormation\CloudFormationClient
+     */
+    protected $cloudFormationClient;
 
+    /**
+     * @var TemplateSquashingService
+     */
     protected $templateSquashingService;
 
     public function __construct(
         TemplateSquashingService $templateSquashingService,
-        AwsClient $awsClient
+        CloudFormation\CloudFormationClient $cloudFormationClient
     ) {
         $this->templateSquashingService = $templateSquashingService;
-        $this->cloudFormation = $awsClient->get('CloudFormation');
+        $this->cloudFormationClient = $cloudFormationClient;
     }
 
     /**
@@ -42,7 +48,7 @@ class StackManagerService
      */
     public function create(Stack $stack)
     {
-        $response = $this->cloudFormation->CreateStack([
+        $response = $this->cloudFormationClient->CreateStack([
             'Capabilities' => ['CAPABILITY_IAM'],
             'OnFailure' => 'DO_NOTHING',
             'Parameters' => $stack->getParameters()->toCloudFormationRequestArgument(),
@@ -62,7 +68,7 @@ class StackManagerService
      */
     public function update(Stack $stack)
     {
-        $response = $this->cloudFormation->UpdateStack([
+        $response = $this->cloudFormationClient->UpdateStack([
             'Capabilities' => ['CAPABILITY_IAM'],
             'StackName' => $stack->getName(),
             'Parameters' => $stack->getParameters()->toCloudFormationRequestArgument(),
@@ -77,7 +83,7 @@ class StackManagerService
      */
     public function delete(Stack $stack)
     {
-        $response = $this->cloudFormation->DeleteStack([
+        $response = $this->cloudFormationClient->DeleteStack([
             'StackName' => $stack->getName(),
         ]);
     }
