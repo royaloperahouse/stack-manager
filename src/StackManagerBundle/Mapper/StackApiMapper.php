@@ -17,7 +17,6 @@ use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\ApiStack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
-use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService;
 
 /**
@@ -49,7 +48,7 @@ class StackApiMapper
      * Create a Stack model from the specified stack using the CloudFormation API.
      *
      * @param string $name Name of stack to create the stack model from.
-     * @return Stack Model representing the stack.
+     * @return ApiStack Model representing the stack.
      */
     public function create($name)
     {
@@ -65,7 +64,7 @@ class StackApiMapper
      * Get Stack models for all stacks with an appropriate template and
      * environment tag using the CloudFormation API.
      *
-     * @return array Stack models
+     * @return ApiStack[] Stack models
      */
     public function findAll()
     {
@@ -87,8 +86,8 @@ class StackApiMapper
      * Create a stack model from the stack portion of a CloudFormation API
      * DescribeStacks response.
      *
-     * @return Stack|null Model representing the stack, or null if the response
-     *     did not have a template and environment tag.
+     * @return ApiStack|null Model representing the stack, or null if the
+     *     response did not have a template and environment tag.
      */
     protected function createFromApiResponse(array $response)
     {
@@ -127,9 +126,9 @@ class StackApiMapper
                 'Tags portion of CloudFormation API response must contain a "Value" key'
             );
 
-            if ($tag['Key'] === Stack::TEMPLATE_TAG) {
+            if ($tag['Key'] === ApiStack::TEMPLATE_TAG) {
                 $templateName = $tag['Value'];
-            } elseif ($tag['Key'] === Stack::ENVIRONMENT_TAG) {
+            } elseif ($tag['Key'] === ApiStack::ENVIRONMENT_TAG) {
                 $environment = $tag['Value'];
             }
         }

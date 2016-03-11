@@ -25,17 +25,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListTemplatesCommand extends Command
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $defaults;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $environments;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $scalingProfiles;
 

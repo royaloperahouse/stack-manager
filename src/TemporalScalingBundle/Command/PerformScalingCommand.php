@@ -26,14 +26,24 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PerformScalingCommand extends Command
 {
+    /**
+     * @var Log\LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * @var StackApiMapper
+     */
     protected $apiStackMapper;
 
-    protected $stackComparisonService;
-
+    /**
+     * @var AbstractCalendarSource
+     */
     protected $temporalScalingService;
 
+    /**
+     * @var string[]
+     */
     protected $calendarSources;
 
     public function __construct(

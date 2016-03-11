@@ -25,10 +25,19 @@ use ROH\Bundle\TemporalScalingBundle\Model\Event;
  */
 class GoogleCalendarCalendarSource extends AbstractCalendarSource
 {
+    /**
+     * @var Log\LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * @var string
+     */
     protected $applicationName;
 
+    /**
+     * @var string
+     */
     protected $developerKey;
 
     public function __construct(

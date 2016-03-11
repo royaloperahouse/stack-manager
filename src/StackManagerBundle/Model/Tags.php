@@ -30,17 +30,17 @@ class Tags implements Iterator
     private $position = 0;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $keys;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $tags;
 
     /**
-     * @var array
+     * @var string[]
      */
     public function __construct(array $tags)
     {
@@ -59,7 +59,7 @@ class Tags implements Iterator
      * Convert the model to an array of arguments ready to be passed to the
      * CloudFormation API.
      *
-     * @return array Arguments for passing to the CloudFormation API.
+     * @return string[][] Arguments for passing to the CloudFormation API.
      */
     public function toCloudFormationRequestArgument()
     {
@@ -74,6 +74,13 @@ class Tags implements Iterator
         return $argument;
     }
 
+    /**
+     * Whether the set of tags represented by this model is identical to those
+     * represented by the specified model.
+     *
+     * @param self $tags
+     * @return boolean
+     */
     public function isIdentical(self $tags)
     {
         return (

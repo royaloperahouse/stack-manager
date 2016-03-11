@@ -25,14 +25,29 @@ use ROH\Bundle\TemporalScalingBundle\Model\Event;
  */
 class TemporalScalingService
 {
+    /**
+     * @var Log\LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * @var StackManagerService
+     */
     protected $stackManager;
 
+    /**
+     * @var StackConfigMapper
+     */
     protected $configStackMapper;
 
+    /**
+     * @var string[][]
+     */
     protected $scalingProfiles;
 
+    /**
+     * @var int
+     */
     protected $minimumUpdateInterval;
 
     public function __construct(

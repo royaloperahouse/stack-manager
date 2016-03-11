@@ -26,12 +26,24 @@ use Symfony\Component\Templating\EngineInterface;
  */
 class StackConfigMapper
 {
+    /**
+     * @var EngineInterface
+     */
     protected $templating;
 
+    /**
+     * @var string[]
+     */
     protected $defaultParameters;
 
+    /**
+     * @var string[]
+     */
     protected $environmentParameters;
 
+    /**
+     * @var string[]
+     */
     protected $scalingProfileParameters;
 
     public function __construct(

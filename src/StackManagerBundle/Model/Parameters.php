@@ -26,12 +26,12 @@ class Parameters implements Iterator
     private $position = 0;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $keys;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $parameters;
 
@@ -79,6 +79,13 @@ class Parameters implements Iterator
         return $argument;
     }
 
+    /**
+     * Whether the set of parameters represented by this model is identical to
+     * those represented by the specified model.
+     *
+     * @param self $parameters
+     * @return boolean
+     */
     public function isIdentical(self $parameters)
     {
         return (

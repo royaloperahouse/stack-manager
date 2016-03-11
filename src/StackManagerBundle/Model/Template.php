@@ -98,6 +98,13 @@ class Template
         return $json;
     }
 
+    /**
+     * Whether the template contents represented by this model is identical to
+     * that represented by the specified model (i.e. the same name and body).
+     *
+     * @param self $template
+     * @return boolean
+     */
     public function isIdentical(self $template)
     {
         return (

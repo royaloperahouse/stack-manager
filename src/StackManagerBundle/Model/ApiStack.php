@@ -69,7 +69,7 @@ class ApiStack extends Stack
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {
