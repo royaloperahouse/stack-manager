@@ -10,20 +10,20 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "false"
-    bootstrap                   = "bootstrap.php.cache" >
+    bootstrap                   = "app/bootstrap.php.cache" >
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>../src/</directory>
+            <directory>src/</directory>
             <exclude>
-                <directory>../src/*/Tests/</directory>
+                <directory>src/*/Tests/</directory>
             </exclude>
         </whitelist>
     </filter>
 
     <testsuites>
         <testsuite name="StackManagerBundle Test Suite">
-            <directory>../src/StackManagerBundle/Tests</directory>
+            <directory>src/StackManagerBundle/Tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
