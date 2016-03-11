@@ -13,7 +13,9 @@ namespace ROH\Bundle\StackManagerBundle\Command;
 
 use ROH\Bundle\StackManagerBundle\Mapper\StackApiMapper;
 use ROH\Bundle\StackManagerBundle\Mapper\StackConfigMapper;
+use ROH\Bundle\StackManagerBundle\Model\StackEvent;
 use ROH\Bundle\StackManagerBundle\Service\StackManagerService;
+use ROH\Bundle\StackManagerBundle\Service\StackWatcherService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,14 +44,21 @@ class UpdateStackCommand extends Command
      */
     private $stackManager;
 
+    /**
+     * @var StackWatcherService
+     */
+    private $stackWatcher;
+
     public function __construct(
         StackApiMapper $apiStackMapper,
         StackConfigMapper $configStackMapper,
-        StackManagerService $stackManager
+        StackManagerService $stackManager,
+        StackWatcherService $stackWatcher
     ) {
         $this->apiStackMapper = $apiStackMapper;
         $this->configStackMapper = $configStackMapper;
         $this->stackManager = $stackManager;
+        $this->stackWatcher = $stackWatcher;
         parent::__construct();
     }
 
@@ -73,6 +82,12 @@ class UpdateStackCommand extends Command
                 'Scaling profile to use for the stack',
                 'default'
             )
+            ->addOption(
+                'watch',
+                null,
+                InputOption::VALUE_NONE,
+                'Monitor the stack for changes until the update is complete'
+            )
             ;
     }
 
@@ -94,5 +109,17 @@ class UpdateStackCommand extends Command
         );
 
         $this->stackManager->update($newStack);
+
+        if ($input->getOption('watch')) {
+            $this->stackWatcher->watch($currentStack, function (StackEvent $event) use ($output) {
+                $output->writeLn(sprintf(
+                    "%s\t%s\t%s\t%s",
+                    $event->getOccurranceTime()->format('c'),
+                    $event->getResourceType(),
+                    $event->getResourceLogicalId(),
+                    $event->getResourceStatus()
+                ));
+            });
+        }
     }
 }

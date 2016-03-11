@@ -11,7 +11,6 @@
 
 namespace ROH\Bundle\StackManagerBundle\Model;
 
-use DateTime;
 use PHPUnit_Framework_Assert;
 
 /**
@@ -51,46 +50,11 @@ class Stack
      */
     protected $parameters;
 
-    /**
-     * Id in CloudFormation.  Only available for models created from the API.
-     *
-     * @var string|null
-     */
-    protected $id;
-
-    /**
-     * Status in CloudFormation.  Only available for models created from the
-     * API.
-     *
-     * @var string|null
-     */
-    protected $status;
-
-    /**
-     * Creation time in CloudFormation.  Only available for models created from
-     * the API.
-     *
-     * @var DateTime|null
-     */
-    protected $creationTime;
-
-    /**
-     * Last updated time in CloudFormation.  Only available for models created
-     * from the API.
-     *
-     * @var DateTime|null
-     */
-    protected $lastUpdatedTime;
-
     public function __construct(
         $name,
         $environment,
         Template $template,
-        Parameters $parameters,
-        $id = null,
-        $status = null,
-        DateTime $creationTime = null,
-        DateTime $lastUpdatedTime = null
+        Parameters $parameters
     ) {
         PHPUnit_Framework_Assert::assertInternalType(
             'string', $name,
@@ -117,10 +81,6 @@ class Stack
         $this->environment = $environment;
         $this->template = $template;
         $this->parameters = $parameters;
-        $this->id = $id;
-        $this->status = $status;
-        $this->creationTime = $creationTime;
-        $this->lastUpdatedTime = $lastUpdatedTime;
     }
 
     /**
@@ -164,26 +124,6 @@ class Stack
             self::ENVIRONMENT_TAG => $this->getEnvironment(),
             self::TEMPLATE_TAG => $this->getTemplate()->getName(),
         ]);
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    public function getCreationTime()
-    {
-        return $this->creationTime;
-    }
-
-    public function getLastUpdatedTime()
-    {
-        return $this->lastUpdatedTime;
     }
 
     /**
