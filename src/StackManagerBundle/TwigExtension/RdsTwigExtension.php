@@ -11,9 +11,10 @@
 
 namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
+use Aws;
 use Aws\Rds;
+use Aws\Iam;
 use InvalidArgumentException;
-use Guzzle;
 use RuntimeException;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -26,32 +27,22 @@ use Twig_SimpleFunction;
 class RdsTwigExtension extends Twig_Extension
 {
     /**
-     * @var Aws\Rds\RdsClient
+     * @var Rds\RdsClient
      */
-    protected $rds;
+    protected $rdsClient;
 
     /**
-     * @var Aws\Iam\IamClient
+     * @var Iam\IamClient
      */
-    protected $iam;
+    protected $iamClient;
 
     /**
-     * @var string
+     * @param Rds\RdsClient $rdsClient RDS client.
+     * @param Iam\IamClient $iamClient IAM client.
      */
-    protected $region;
-
-    /**
-     * @param Guzzle\Service\Builder\ServiceBuilder $awsClient AWS client.
-     * @param string $awsRegion AWS region to use for API calls.
-     */
-    public function __construct(
-        Guzzle\Service\Builder\ServiceBuilder $awsClient,
-        $awsRegion
-    ) {
-        $this->rds = $awsClient->get('rds');
-        // The IAM API is only available in us-east-1.
-        $this->iam = $awsClient->get('iam', ['region' => 'us-east-1']);
-        $this->region = $awsRegion;
+    public function __construct(Rds\RdsClient $rdsClient, Iam\IamClient $iamClient) {
+        $this->rdsClient = $rdsClient;
+        $this->iamClient = $iamClient;
     }
 
     /**
@@ -82,7 +73,7 @@ class RdsTwigExtension extends Twig_Extension
             ));
         }
 
-        $response = $this->rds->describeDBSnapshots([
+        $response = $this->rdsClient->describeDBSnapshots([
             'DBInstanceIdentifier' => $instanceIdentifier,
         ]);
 
@@ -101,16 +92,16 @@ class RdsTwigExtension extends Twig_Extension
     public function getRdsDbInstanceTag($instanceIdentifier, $tagKey)
     {
         // Compose the ARN of the DB instance.
-        $accountId = explode(':', $this->iam->GetUser()['User']['Arn'])[4];
+        $accountId = explode(':', $this->iamClient->GetUser()['User']['Arn'])[4];
         $arn = sprintf(
             'arn:aws:rds:%s:%s:db:%s',
-            $this->region,
+            $this->rdsClient->getRegion(),
             $accountId,
             $instanceIdentifier
         );
 
         try {
-            $tags = $this->rds->ListTagsForResource(['ResourceName' => $arn])['TagList'];
+            $tags = $this->rdsClient->ListTagsForResource(['ResourceName' => $arn])['TagList'];
         } catch (Rds\Exception\DBInstanceNotFoundException $e) {
             return null;
         }
@@ -142,7 +133,7 @@ class RdsTwigExtension extends Twig_Extension
      *     DescribeDBSnapshots API call.
      * @return string Latest snapshot id.
      */
-    private function getLatestRdsSnapshotFromResponse(Guzzle\Service\Resource\Model $response)
+    private function getLatestRdsSnapshotFromResponse(Aws\Result $response)
     {
         if (!$response['DBSnapshots']) {
             throw new RuntimeException('No snapshots returned in the RDS API response');

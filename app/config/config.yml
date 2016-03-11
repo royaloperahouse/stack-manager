@@ -11,11 +11,22 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
 
-platinum_pixs_aws:
-    base:
+aws:
+    region: %aws_region%
+    credentials:
         key: %aws_access_key_id%
         secret: %aws_secret_key%
-        region: %aws_region%
+    CloudFormation:
+        version: '2010-05-15'
+    Ec2:
+        version: '2015-10-01'
+    Iam:
+        version: '2010-05-08'
+        region: us-east-1
+    Rds:
+        version: '2014-10-31'
+    S3:
+        version: '2006-03-01'
 
 roh_temporal_scaling:
     calendar_sources: {}

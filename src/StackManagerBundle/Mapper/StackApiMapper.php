@@ -11,8 +11,8 @@
 
 namespace ROH\Bundle\StackManagerBundle\Mapper;
 
+use Aws\CloudFormation;
 use DateTime;
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
 use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\Stack;
@@ -26,16 +26,22 @@ use ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService;
  */
 class StackApiMapper
 {
-    protected $templateExpansionService;
+    /**
+     * @var CloudFormation\CloudFormationClient
+     */
+    protected $cloudFormationClient;
 
-    protected $cloudFormation;
+    /**
+     * @var TemplateExpansionService
+     */
+    protected $templateExpansionService;
 
     public function __construct(
         TemplateExpansionService $templateExpansionService,
-        AwsClient $awsClient
+        CloudFormation\CloudFormationClient $cloudFormationClient
     ) {
         $this->templateExpansionService = $templateExpansionService;
-        $this->cloudFormation = $awsClient->get('CloudFormation');
+        $this->cloudFormationClient = $cloudFormationClient;
     }
 
     /**
@@ -46,7 +52,7 @@ class StackApiMapper
      */
     public function create($name)
     {
-        $response = $this->cloudFormation->DescribeStacks([
+        $response = $this->cloudFormationClient->DescribeStacks([
             'StackName' => $name,
         ]);
         $stack = $this->createFromApiResponse(current($response->get('Stacks')));
@@ -64,7 +70,7 @@ class StackApiMapper
     {
         $stacks = [];
 
-        $response = $this->cloudFormation->DescribeStacks();
+        $response = $this->cloudFormationClient->DescribeStacks();
         foreach ($response['Stacks'] as $data) {
             $stack = $this->createFromApiResponse($data);
             if ($stack && !$stack->isChildStack()) {
@@ -137,10 +143,14 @@ class StackApiMapper
         // The stack template may contain sub-stacks as URLs, expand these so
         // we have a complete representation of the stack.
         $templateExpansionService = $this->templateExpansionService;
-        $cloudFormation = $this->cloudFormation;
-        $templateBodyCallback = function () use ($name, $templateExpansionService, $cloudFormation) {
+        $cloudFormationClient = $this->cloudFormationClient;
+        $templateBodyCallback = function () use (
+            $name,
+            $templateExpansionService,
+            $cloudFormationClient
+        ) {
             return $templateExpansionService->getExpandedTemplateBody(
-                $cloudFormation->GetTemplate([
+                $cloudFormationClient->GetTemplate([
                     'StackName' => $name,
                 ])['TemplateBody']
             );

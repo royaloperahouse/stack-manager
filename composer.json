@@ -13,11 +13,11 @@
         ]
     },
     "require": {
+        "aws/aws-sdk-php-symfony": "1.1.*",
         "google/apiclient": "1.1.*",
         "php": ">=5.6.0",
         "phpspec/php-diff": "1.0.*",
         "phpunit/phpunit": "5.2.*",
-        "platinumpixs/aws-symfony2-bundle": "1.2.*",
         "seld/jsonlint": "1.4.*",
         "sensio/buzz-bundle": "1.0.*",
         "sensio/distribution-bundle": "5.0.*",

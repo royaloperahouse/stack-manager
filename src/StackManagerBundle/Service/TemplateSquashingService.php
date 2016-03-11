@@ -11,7 +11,7 @@
 
 namespace ROH\Bundle\StackManagerBundle\Service;
 
-use Guzzle\Service\Builder\ServiceBuilder as AwsClient;
+use Aws\S3;
 use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Template;
 use Symfony\Component\Serializer;
@@ -39,12 +39,22 @@ class TemplateSquashingService
     const SUB_STACK_RESOURCE_TYPE = 'AWS::CloudFormation::Stack';
 
     /**
-     * @param AwsClient $awsClient AWS API client
+     * @var S3\S3Client
+     */
+    protected $s3Client;
+
+    /**
+     * @var string Name of bucket to upload templates to.
+     */
+    protected $s3BucketName;
+
+    /**
+     * @param S3\S3Client $s3Client AWS S3 client
      * @param string $s3BucketName Name of S3 bucket to upload templates to.
      */
-    public function __construct(AwsClient $awsClient, $s3BucketName)
+    public function __construct(S3\S3Client $s3Client, $s3BucketName)
     {
-        $this->s3 = $awsClient->get('S3');
+        $this->s3Client = $s3Client;
         $this->s3BucketName = $s3BucketName;
     }
 
@@ -123,7 +133,7 @@ class TemplateSquashingService
 
         $file = hash(self::OBJECT_KEY_HASH_ALGORITHM, $json).'.json';
 
-        $response = $this->s3->PutObject([
+        $response = $this->s3Client->PutObject([
             'Bucket' => $this->s3BucketName,
             'Key' => $file,
             'Body' => $json,
