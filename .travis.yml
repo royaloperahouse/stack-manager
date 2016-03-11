@@ -5,6 +5,7 @@ php:
  - '5.6'
 
 install:
- - composer install
+ - composer install --no-scripts
+ - vendor/sensio/distribution-bundle/Resources/bin/build_bootstrap.php
 
 script: bin/phpunit
