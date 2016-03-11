@@ -29,6 +29,7 @@ services:
             - @roh_stack_manager.mapper.stack_api
             - @roh_stack_manager.mapper.stack_config
             - @roh_stack_manager.service.stack_manager
+            - @roh_stack_manager.service.stack_watcher
         tags:
             - { name: console.command }
 
@@ -78,11 +79,21 @@ services:
             - %roh_stack_manager.environments%
             - %roh_stack_manager.scaling_profiles%
 
+    roh_stack_manager.mapper.stack_event_api:
+        class: ROH\Bundle\StackManagerBundle\Mapper\StackEventApiMapper
+        arguments:
+            - @aws.cloudformation
+
     roh_stack_manager.service.stack_manager:
         class: ROH\Bundle\StackManagerBundle\Service\StackManagerService
         arguments:
             - @roh_stack_manager.service.template_squashing
             - @aws.cloudformation
+
+    roh_stack_manager.service.stack_watcher:
+        class: ROH\Bundle\StackManagerBundle\Service\StackWatcherService
+        arguments:
+            - @roh_stack_manager.mapper.stack_event_api
 
     roh_stack_manager.service.stack_comparison:
         class: ROH\Bundle\StackManagerBundle\Service\StackComparisonService

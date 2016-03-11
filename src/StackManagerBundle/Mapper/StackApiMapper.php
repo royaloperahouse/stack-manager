@@ -12,11 +12,12 @@
 namespace ROH\Bundle\StackManagerBundle\Mapper;
 
 use Aws\CloudFormation;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
-use ROH\Bundle\StackManagerBundle\Model\Stack;
+use ROH\Bundle\StackManagerBundle\Model\ApiStack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
+use ROH\Bundle\StackManagerBundle\Model\Stack;
 use ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService;
 
 /**
@@ -162,15 +163,15 @@ class StackApiMapper
             $response['LastUpdatedTime'] = $response['CreationTime'];
         }
 
-        return new Stack(
+        return new ApiStack(
             $name,
             $environment,
             new Template($templateName, $templateBodyCallback),
             Parameters::newFromCloudFormationResponseElement($response['Parameters']),
             $response['StackId'],
             $response['StackStatus'],
-            new DateTime($response['CreationTime']),
-            new DateTime($response['LastUpdatedTime'])
+            new DateTimeImmutable($response['CreationTime']),
+            new DateTimeImmutable($response['LastUpdatedTime'])
         );
     }
 }
