@@ -27,7 +27,8 @@
         "twig/twig": "1.19.*"
     },
     "require-dev": {
-        "fabpot/php-cs-fixer": "1.11.*"
+        "fabpot/php-cs-fixer": "1.11.*",
+        "sebastian/phpcpd": "2.0.*"
     },
     "scripts": {
         "post-install-cmd": [
