@@ -100,8 +100,7 @@ class Ec2TwigExtension extends Twig_Extension
      * from the returned data.
      *
      * @throws RuntimeException If no available images are found in the response.
-     * @param Guzzle\Service\Resource\Model $response Response from the
-     *     DescribeImages API call.
+     * @param Aws\Result $response Response from the DescribeImages API call.
      * @return string Latest image id.
      */
     private function getLatestEc2ImageFromResponse(Aws\Result $response)

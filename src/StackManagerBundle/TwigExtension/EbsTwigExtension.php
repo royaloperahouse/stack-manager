@@ -11,6 +11,7 @@
 
 namespace ROH\Bundle\StackManagerBundle\TwigExtension;
 
+use Aws;
 use Aws\Ec2;
 use InvalidArgumentException;
 use RuntimeException;
@@ -120,11 +121,10 @@ class EbsTwigExtension extends Twig_Extension
      *
      * @throws RuntimeException If no completed snapshots are found in the
      *     response.
-     * @param Guzzle\Service\Resource\Model $response Response from the
-     *     DescribeSnapshots API call.
+     * @param Aws\Result $response Response from the DescribeSnapshots API call.
      * @return string Latest snapshot id.
      */
-    private function getLatestEbsVolumeSnapshotFromResponse(Guzzle\Service\Resource\Model $response)
+    private function getLatestEbsVolumeSnapshotFromResponse(Aws\Result $response)
     {
         if (!$response['Snapshots']) {
             throw new RuntimeException('No snapshots returned in the EC2 API response');

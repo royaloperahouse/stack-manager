@@ -102,8 +102,12 @@ class RdsTwigExtension extends Twig_Extension
 
         try {
             $tags = $this->rdsClient->ListTagsForResource(['ResourceName' => $arn])['TagList'];
-        } catch (Rds\Exception\DBInstanceNotFoundException $e) {
-            return null;
+        } catch (Rds\Exception\RdsException $e) {
+            if (strpos($e->getMessage(), 'DBInstanceNotFound') !== false) {
+                return null;
+            }
+
+            throw $e;
         }
 
         foreach ($tags as $tag) {
@@ -129,8 +133,8 @@ class RdsTwigExtension extends Twig_Extension
      *
      * @throws RuntimeException If no available snapshtos are found in the
      *     response.
-     * @param Guzzle\Service\Resource\Model $response Response from the
-     *     DescribeDBSnapshots API call.
+     * @param Aws\Result $response Response from the DescribeDBSnapshots API
+     *     call.
      * @return string Latest snapshot id.
      */
     private function getLatestRdsSnapshotFromResponse(Aws\Result $response)
