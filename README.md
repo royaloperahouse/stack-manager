@@ -1,5 +1,7 @@
 # Stack Manager
 
+[![Build Status](https://travis-ci.org/royaloperahouse/stack-manager.svg)](https://travis-ci.org/royaloperahouse/stack-manager)
+
 Stack Manager is a tool for managing AWS CloudFormation stacks using Twig templates.
 
 The basic CloudFormation language is useful for specifying your infrastructure, but being defined in JSON makes it limited to pure configuration with complex workarounds to specify more advanced features.  Enhancing your templates with Twig using the Stack Manager enables many advanced options:
