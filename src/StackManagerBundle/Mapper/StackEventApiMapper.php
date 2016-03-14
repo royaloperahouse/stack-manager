@@ -41,7 +41,7 @@ class StackEventApiMapper
      * @return StackEvents[] Events occuring after the specified time, ordered
      *     chronologically.
      */
-    public function findStackEventAfterDateTime(Stack $stack, DateTimeInterface $afterTime)
+    public function findStackEventAfterDateTime(Stack $stack, DateTimeInterface $afterTime): array
     {
         $response = $this->cloudformationClient->DescribeStackEvents([
             // Specifying the stack ID rather than name works for deleted

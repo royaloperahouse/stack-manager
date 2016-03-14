@@ -48,7 +48,7 @@ class RdsTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('getLatestRdsSnapshot', [$this, 'getLatestRdsSnapshot']),
@@ -64,7 +64,7 @@ class RdsTwigExtension extends Twig_Extension
      *     the snapshot identifier for.
      * @return string Latest snapshot identifier of the specified DB instance.
      */
-    public function getLatestRdsSnapshot($instanceIdentifier)
+    public function getLatestRdsSnapshot(string $instanceIdentifier): string
     {
         if (!strlen($instanceIdentifier)) {
             throw new InvalidArgumentException(sprintf(
@@ -89,7 +89,7 @@ class RdsTwigExtension extends Twig_Extension
      * @return string|null Value of tag or null if the db instance or tag does
      *     not exist.
      */
-    public function getRdsDbInstanceTag($instanceIdentifier, $tagKey)
+    public function getRdsDbInstanceTag(string $instanceIdentifier, string $tagKey): string
     {
         // Compose the ARN of the DB instance.
         $accountId = explode(':', $this->iamClient->GetUser()['User']['Arn'])[4];
@@ -122,7 +122,7 @@ class RdsTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'roh_rds';
     }
@@ -137,7 +137,7 @@ class RdsTwigExtension extends Twig_Extension
      *     call.
      * @return string Latest snapshot id.
      */
-    private function getLatestRdsSnapshotFromResponse(Aws\Result $response)
+    private function getLatestRdsSnapshotFromResponse(Aws\Result $response): string
     {
         if (!$response['DBSnapshots']) {
             throw new RuntimeException('No snapshots returned in the RDS API response');

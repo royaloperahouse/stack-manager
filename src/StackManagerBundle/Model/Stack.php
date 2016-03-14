@@ -11,8 +11,6 @@
 
 namespace ROH\Bundle\StackManagerBundle\Model;
 
-use PHPUnit_Framework_Assert;
-
 /**
  * Immutable model representing a CloudFormation stack.
  *
@@ -51,31 +49,14 @@ class Stack
     protected $parameters;
 
     public function __construct(
-        $name,
-        $environment,
+        string $name,
+        string $environment,
         Template $template,
         Parameters $parameters
     ) {
-        PHPUnit_Framework_Assert::assertInternalType(
-            'string', $name,
-            'Stack name must be a string'
-        );
-        PHPUnit_Framework_Assert::assertInternalType(
-            'string', $environment,
-            'Stack environment must be a string'
-        );
-        PHPUnit_Framework_Assert::assertGreaterThan(
-            0, strlen($name),
-            'Stack name must be at least one character long'
-        );
-        PHPUnit_Framework_Assert::assertLessThanOrEqual(
-            255, strlen($name),
-            'Stack name must be no more than 255 characters in length'
-        );
-        PHPUnit_Framework_Assert::assertRegExp(
-            '#^[a-zA-Z][-a-zA-Z0-9]*$#', $name,
-            'Stack name must begin with a letter and contain only alphanumeric characters and dashes'
-        );
+        assert(strlen($name) > 0, 'Stack name must be at least one character long');
+        assert(strlen($name) <= 255, 'Stack name must be no more than 255 characters in length');
+        assert(preg_match('#^[a-zA-Z][-a-zA-Z0-9]*$#', $name), 'Stack name must begin with a letter and contain only alphanumeric characters and dashes');
 
         $this->name = $name;
         $this->environment = $environment;
@@ -86,7 +67,7 @@ class Stack
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -94,7 +75,7 @@ class Stack
     /**
      * @return string
      */
-    public function getEnvironment()
+    public function getEnvironment(): string
     {
         return $this->environment;
     }
@@ -102,15 +83,15 @@ class Stack
     /**
      * @return Template
      */
-    public function getTemplate()
+    public function getTemplate(): Template
     {
         return $this->template;
     }
 
     /**
-     * @return Template
+     * @return Parameters
      */
-    public function getParameters()
+    public function getParameters(): Parameters
     {
         return $this->parameters;
     }
@@ -118,7 +99,7 @@ class Stack
     /**
      * @return Tags
      */
-    public function getTags()
+    public function getTags(): Tags
     {
         return new Tags([
             self::ENVIRONMENT_TAG => $this->getEnvironment(),
@@ -133,7 +114,7 @@ class Stack
      *
      * @return boolean Whether the stack might be a child stack
      */
-    public function isChildStack()
+    public function isChildStack(): bool
     {
         return preg_match('#-[A-Z0-9]{12,13}$#', $this->getName());
     }
@@ -145,7 +126,7 @@ class Stack
      * @param Stack $stack Stack to compare this stack to.
      * @return boolean Whether the two stacks objects are identical.
      */
-    public function isIdentical(self $stack)
+    public function isIdentical(self $stack): bool
     {
         return (
             $this->getTemplate()->isIdentical($stack->getTemplate())

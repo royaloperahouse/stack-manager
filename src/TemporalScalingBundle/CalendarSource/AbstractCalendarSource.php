@@ -24,5 +24,5 @@ abstract class AbstractCalendarSource
      * @param string Id of calendar to get the current events of.
      * @return Event[] Event models
      */
-    abstract public function getCurrentEvents($calendarId);
+    abstract public function getCurrentEvents(string $calendarId): array;
 }

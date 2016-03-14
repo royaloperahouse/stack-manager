@@ -41,7 +41,7 @@ class Ec2TwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction(
@@ -58,7 +58,7 @@ class Ec2TwigExtension extends Twig_Extension
      * @param string $description Description of the image.
      * @return string Latest image id with the specified owner and description.
      */
-    public function getLatestEc2ImageByOwnerAndDescription($ownerAlias, $description)
+    public function getLatestEc2ImageByOwnerAndDescription(string $ownerAlias, string $description): string
     {
         if (!strlen($ownerAlias)) {
             throw new InvalidArgumentException(sprintf(
@@ -90,7 +90,7 @@ class Ec2TwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'roh_ec2';
     }
@@ -103,7 +103,7 @@ class Ec2TwigExtension extends Twig_Extension
      * @param Aws\Result $response Response from the DescribeImages API call.
      * @return string Latest image id.
      */
-    private function getLatestEc2ImageFromResponse(Aws\Result $response)
+    private function getLatestEc2ImageFromResponse(Aws\Result $response): string
     {
         if (!$response['Images']) {
             throw new RuntimeException('No images returned in the EC2 API response');

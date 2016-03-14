@@ -12,7 +12,6 @@
 namespace ROH\Bundle\StackManagerBundle\Model;
 
 use DateTimeImmutable;
-use PHPUnit_Framework_Assert;
 
 /**
  * Immutable model representing an event on a stack.
@@ -59,11 +58,11 @@ class StackEvent
     public function __construct(
         Stack $stack,
         DateTimeImmutable $occurranceTime,
-        $resourceLogicalId,
-        $resourcePhysicalId,
-        $resourceType,
-        $resourceStatus,
-        $resourceStatusReason
+        string $resourceLogicalId,
+        string $resourcePhysicalId,
+        string $resourceType,
+        string $resourceStatus,
+        string $resourceStatusReason
     ) {
         $this->stack = $stack;
         $this->occurranceTime = $occurranceTime;
@@ -74,7 +73,7 @@ class StackEvent
         $this->resourceStatusReason = $resourceStatusReason;
     }
 
-    public static function newFromApiResponseElement(Stack $stack, array $element)
+    public static function newFromApiResponseElement(Stack $stack, array $element): StackEvent
     {
         $event = new StackEvent(
             $stack,
@@ -92,7 +91,7 @@ class StackEvent
     /**
      * @return Stack
      */
-    public function getStack()
+    public function getStack(): Stack
     {
         return $this->stack;
     }
@@ -100,7 +99,7 @@ class StackEvent
     /**
      * @return DateTimeImmutable
      */
-    public function getOccurranceTime()
+    public function getOccurranceTime(): DateTimeImmutable
     {
         return $this->occurranceTime;
     }
@@ -108,7 +107,7 @@ class StackEvent
     /**
      * @return string
      */
-    public function getResourceLogicalId()
+    public function getResourceLogicalId(): string
     {
         return $this->resourceLogicalId;
     }
@@ -116,7 +115,7 @@ class StackEvent
     /**
      * @return string
      */
-    public function getResourcePhysicalId()
+    public function getResourcePhysicalId(): string
     {
         return $this->resourcePhysicalId;
     }
@@ -124,7 +123,7 @@ class StackEvent
     /**
      * @return string
      */
-    public function getResourceType()
+    public function getResourceType(): string
     {
         return $this->resourceType;
     }
@@ -132,7 +131,7 @@ class StackEvent
     /**
      * @return string
      */
-    public function getResourceStatus()
+    public function getResourceStatus(): string
     {
         return $this->resourceStatus;
     }
@@ -140,7 +139,7 @@ class StackEvent
     /**
      * @return string
      */
-    public function getResourceStatusReason()
+    public function getResourceStatusReason(): string
     {
         return $this->resourceStatusReason;
     }

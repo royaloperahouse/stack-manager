@@ -38,11 +38,11 @@ class CidrTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        return array(
+        return [
             new Twig_SimpleFilter('cidr', array($this, 'cidr')),
-        );
+        ];
     }
 
     /**
@@ -51,7 +51,7 @@ class CidrTwigExtension extends Twig_Extension
      *
      * @param string $containerBlock
      */
-    public function cidr($containerBlock, $desiredBlockPrefixSize)
+    public function cidr(string $containerBlock, int $desiredBlockPrefixSize): string
     {
         // Translate the container block from CIDR to a prefix and netmask.
         list($containerBlockPrefix, $containerBlockPrefixSize) = explode('/', $containerBlock);
@@ -101,7 +101,7 @@ class CidrTwigExtension extends Twig_Extension
      * @param int $prefixSize
      * @return int
      */
-    private function prefixSizeToNetmask($prefixSize)
+    private function prefixSizeToNetmask(int $prefixSize): int
     {
         return ~(pow(2, 32 - $prefixSize) - 1) & 0xFFFFFFFF;
     }
@@ -114,7 +114,7 @@ class CidrTwigExtension extends Twig_Extension
      * @param int $netmask
      * @return int
      */
-    private function getPrefix($ip, $netmask)
+    private function getPrefix(int $ip, int $netmask): int
     {
         return $ip & $netmask;
     }
@@ -127,7 +127,7 @@ class CidrTwigExtension extends Twig_Extension
      * @param int $netmask
      * @return int
      */
-    private function getBroadcast($ip, $netmask)
+    private function getBroadcast(int $ip, int $netmask): int
     {
         return $ip | ~$netmask & 0xFFFFFFFF;
     }
@@ -135,7 +135,7 @@ class CidrTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'roh_cidr';
     }

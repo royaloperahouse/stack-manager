@@ -13,7 +13,8 @@ namespace ROH\Bundle\StackManagerBundle\Mapper;
 
 use Aws\CloudFormation;
 use DateTimeImmutable;
-use PHPUnit_Framework_Assert;
+use RuntimeException;
+use ROH\Bundle\StackManagerBundle\Exception\StackNotHandledException;
 use ROH\Bundle\StackManagerBundle\Model\Parameters;
 use ROH\Bundle\StackManagerBundle\Model\ApiStack;
 use ROH\Bundle\StackManagerBundle\Model\Template;
@@ -50,7 +51,7 @@ class StackApiMapper
      * @param string $name Name of stack to create the stack model from.
      * @return ApiStack Model representing the stack.
      */
-    public function create($name)
+    public function create(string $name): ApiStack
     {
         $response = $this->cloudFormationClient->DescribeStacks([
             'StackName' => $name,
@@ -66,13 +67,17 @@ class StackApiMapper
      *
      * @return ApiStack[] Stack models
      */
-    public function findAll()
+    public function findAll(): array
     {
         $stacks = [];
 
         $response = $this->cloudFormationClient->DescribeStacks();
         foreach ($response['Stacks'] as $data) {
-            $stack = $this->createFromApiResponse($data);
+            try {
+                $stack = $this->createFromApiResponse($data);
+            } catch (StackNotHandledException $e) {
+            }
+
             if ($stack && !$stack->isChildStack()) {
                 $stacks[$stack->getName()] = $stack;
             }
@@ -86,45 +91,22 @@ class StackApiMapper
      * Create a stack model from the stack portion of a CloudFormation API
      * DescribeStacks response.
      *
-     * @return ApiStack|null Model representing the stack, or null if the
-     *     response did not have a template and environment tag.
+     * @throws RuntimeException If the stack is missing a template or
+     *     environment tag.
+     * @return ApiStack Model representing the stack.
      */
-    protected function createFromApiResponse(array $response)
+    protected function createFromApiResponse(array $response): ApiStack
     {
-        PHPUnit_Framework_Assert::assertArrayHasKey(
-            'StackId', $response,
-            'Stack portion of CloudFormation API response must contain a "StackId" key'
-        );
-        PHPUnit_Framework_Assert::assertArrayHasKey(
-            'StackName', $response,
-            'Stack portion of CloudFormation API response must contain a "StackName" key'
-        );
-        PHPUnit_Framework_Assert::assertArrayHasKey(
-            'StackStatus', $response,
-            'Stack portion of CloudFormation API response must contain a "StackStatus" key'
-        );
-        PHPUnit_Framework_Assert::assertArrayHasKey(
-            'Parameters', $response,
-            'Stack portion of CloudFormation API response must contain a "Parameters" key'
-        );
-        PHPUnit_Framework_Assert::assertArrayHasKey(
-            'Tags', $response,
-            'Stack portion of CloudFormation API response must contain a "Tags" key'
-        );
-        PHPUnit_Framework_Assert::assertArrayHasKey(
-            'CreationTime', $response,
-            'Stack portion of CloudFormation API response must contain a "CreationTime" key'
-        );
+        assert(isset($response['StackId']), 'Stack portion of CloudFormation API response must contain a "StackId" key');
+        assert(isset($response['StackName']), 'Stack portion of CloudFormation API response must contain a "StackName" key');
+        assert(isset($response['StackStatus']), 'Stack portion of CloudFormation API response must contain a "StackStatus" key');
+        assert(isset($response['Parameters']), 'Stack portion of CloudFormation API response must contain a "Parameters" key');
+        assert(isset($response['Tags']), 'Stack portion of CloudFormation API response must contain a "Tags" key');
+        assert(isset($response['CreationTime']), 'Stack portion of CloudFormation API response must contain a "CreationTime" key');
 
         foreach ($response['Tags'] as $tag) {
-            PHPUnit_Framework_Assert::assertArrayHasKey(
-                'Key', $tag,
-                'Tags portion of CloudFormation API response must contain a "Key" key'
-            );
-            PHPUnit_Framework_Assert::assertArrayHasKey(
-                'Value', $tag,
-                'Tags portion of CloudFormation API response must contain a "Value" key'
-            );
+            assert(isset($tag['Key']), 'Tags portion of CloudFormation API response must contain a "Key" key');
+            assert(isset($tag['Value']), 'Tags portion of CloudFormation API response must contain a "Value" key');
 
             if ($tag['Key'] === ApiStack::TEMPLATE_TAG) {
                 $templateName = $tag['Value'];
@@ -133,8 +115,18 @@ class StackApiMapper
             }
         }
 
-        if (!isset($templateName) || !isset($environment)) {
-            return null;
+        if (!isset($templateName)) {
+            throw new StackNotHandledException(sprintf(
+                'Tag "%s" for template missing from stack "%s"',
+                ApiStack::TEMPLATE_TAG,
+                $response['StackName']
+            ));
+        } elseif (!isset($environment)) {
+            throw new StackNotHandledException(sprintf(
+                'Tag "%s" for environment missing from stack "%s"',
+                ApiStack::ENVIRONMENT_TAG,
+                $response['StackName']
+            ));
         }
 
         // Get the stack name from API response, for if its case has been normalised.

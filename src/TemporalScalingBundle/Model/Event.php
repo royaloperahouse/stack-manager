@@ -40,7 +40,7 @@ class Event
      * @param DateTime $startTime
      * @param DateTime $endTime
      */
-    public function __construct($summary, DateTime $startTime, DateTime $endTime)
+    public function __construct(string $summary, DateTime $startTime, DateTime $endTime)
     {
         $this->summary = $summary;
         $this->startTime = $startTime;
@@ -50,7 +50,7 @@ class Event
     /**
      * @return string
      */
-    public function getSummary()
+    public function getSummary(): string
     {
         return $this->summary;
     }
@@ -58,7 +58,7 @@ class Event
     /**
      * @return DateTime
      */
-    public function getStartTime()
+    public function getStartTime(): DateTime
     {
         return $this->startTime;
     }
@@ -66,7 +66,7 @@ class Event
     /**
      * @return DateTime
      */
-    public function getEndTime()
+    public function getEndTime(): DateTime
     {
         return $this->endTime;
     }
@@ -76,7 +76,7 @@ class Event
      *
      * @return int Number of seconds between the start and end of the event.
      */
-    public function getDuration()
+    public function getDuration(): int
     {
         return $this->getEndTime()->getTimestamp() - $this->getStartTime()->getTimestamp();
     }

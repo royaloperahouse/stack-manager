@@ -42,9 +42,9 @@ class TemplateExpansionService
      * Recursively expand the supplied template body.
      *
      * @param string $body JSON-encoded template body to expand.
-     * @return string Expanded template body.
+     * @return stdClass Expanded template body.
      */
-    public function getExpandedTemplateBody($body)
+    public function getExpandedTemplateBody(string $body): stdClass
     {
         $body = (new Serializer\Encoder\JsonDecode)->decode(
             $body,
@@ -92,9 +92,9 @@ class TemplateExpansionService
      * Download the template with the specified URL.
      *
      * @param string $url URL of template to download.
-     * @return string Template body.
+     * @return stdClass Template body.
      */
-    public function downloadTemplate($url)
+    public function downloadTemplate(string $url): stdClass
     {
         $json = $this->browser->get($url)->getContent();
         $template = (new Serializer\Encoder\JsonDecode)->decode(

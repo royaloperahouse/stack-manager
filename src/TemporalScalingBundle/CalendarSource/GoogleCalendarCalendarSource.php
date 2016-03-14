@@ -42,8 +42,8 @@ class GoogleCalendarCalendarSource extends AbstractCalendarSource
 
     public function __construct(
         Log\LoggerInterface $logger,
-        $applicationName,
-        $developerKey
+        string $applicationName,
+        string $developerKey
     ) {
         $this->logger = $logger;
         $this->applicationName = $applicationName;
@@ -53,30 +53,30 @@ class GoogleCalendarCalendarSource extends AbstractCalendarSource
     /**
      * {@inheritdoc}
      */
-    public function getCurrentEvents($calendarId)
+    public function getCurrentEvents(string $calendarId): array
     {
         $client = new Google_Client();
         $client->setApplicationName($this->applicationName);
         $client->setDeveloperKey($this->developerKey);
 
-            // Force the timezone here to ensure there is no discrepency
-            // between the default timezone and the calendar timezone.
-            $timezone = new DateTimeZone('UTC');
+        // Force the timezone here to ensure there is no discrepency
+        // between the default timezone and the calendar timezone.
+        $timezone = new DateTimeZone('UTC');
 
-            // Using the Google Calendar API, 'timeMin' is inclusive and
-            // 'timeMax' is exclusive, so to find current events (i.e. events
-            // occurring at this exact second) search between now and now + one
-            // second.
-            $timeMin = new DateTime('now', $timezone);
+        // Using the Google Calendar API, 'timeMin' is inclusive and
+        // 'timeMax' is exclusive, so to find current events (i.e. events
+        // occurring at this exact second) search between now and now + one
+        // second.
+        $timeMin = new DateTime('now', $timezone);
         $timeMax = new DateTime('+1 second', $timezone);
 
         $service = new Google_Service_Calendar($client);
         $response = $service->events->listEvents($calendarId, [
-                'singleEvents' => true,
-                'timeMin' => $timeMin->format('c'),
-                'timeMax' => $timeMax->format('c'),
-                'timeZone' => $timezone->getName(),
-            ]);
+            'singleEvents' => true,
+            'timeMin' => $timeMin->format('c'),
+            'timeMax' => $timeMax->format('c'),
+            'timeZone' => $timezone->getName(),
+        ]);
 
         $events = [];
         foreach ($response->getItems() as $item) {
@@ -87,16 +87,16 @@ class GoogleCalendarCalendarSource extends AbstractCalendarSource
                 );
         }
 
-            // Sort events by duration ascending.
-            usort($events, function ($a, $b) {
-                return ($a->getDuration() < $b->getDuration()) ? -1 : 1;
-            });
+        // Sort events by duration ascending.
+        usort($events, function ($a, $b) {
+            return ($a->getDuration() < $b->getDuration()) ? -1 : 1;
+        });
 
         $this->logger->debug(sprintf(
-                'Found %d current events in calendar "%s"',
-                count($events),
-                $calendarId
-            ));
+            'Found %d current events in calendar "%s"',
+            count($events),
+            $calendarId
+        ));
 
         return $events;
     }

@@ -41,7 +41,7 @@ class EbsTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('getLatestEbsVolumeSnapshot', [$this, 'getLatestEbsVolumeSnapshot']),
@@ -56,7 +56,7 @@ class EbsTwigExtension extends Twig_Extension
      *     snapshot id for.
      * @return string Latest snapshot id of the specified EBS volume.
      */
-    public function getLatestEbsVolumeSnapshot($volumeId)
+    public function getLatestEbsVolumeSnapshot(string $volumeId): string
     {
         if (!strlen($volumeId)) {
             throw new InvalidArgumentException(sprintf(
@@ -87,7 +87,7 @@ class EbsTwigExtension extends Twig_Extension
      * @param string $volumeId Id of EBS volume to get the source snapshot of.
      * @return string Source snapshto id of the specified EBS volume.
      */
-    public function getEbsVolumeSourceSnapshot($volumeId)
+    public function getEbsVolumeSourceSnapshot(string $volumeId): string
     {
         if (!strlen($volumeId)) {
             throw new InvalidArgumentException(sprintf(
@@ -110,7 +110,7 @@ class EbsTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'roh_ebs';
     }
@@ -124,7 +124,7 @@ class EbsTwigExtension extends Twig_Extension
      * @param Aws\Result $response Response from the DescribeSnapshots API call.
      * @return string Latest snapshot id.
      */
-    private function getLatestEbsVolumeSnapshotFromResponse(Aws\Result $response)
+    private function getLatestEbsVolumeSnapshotFromResponse(Aws\Result $response): string
     {
         if (!$response['Snapshots']) {
             throw new RuntimeException('No snapshots returned in the EC2 API response');

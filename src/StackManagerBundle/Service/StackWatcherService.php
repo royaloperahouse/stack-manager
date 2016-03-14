@@ -66,8 +66,8 @@ class StackWatcherService
     public function watch(
         ApiStack $stack,
         callable $callback,
-        $breakEvents = self::BREAK_EVENTS,
-        $pollInterval = self::POLL_INTERVAL
+        array $breakEvents = self::BREAK_EVENTS,
+        int $pollInterval = self::POLL_INTERVAL
     ) {
         $afterTime = new DateTimeImmutable;
 

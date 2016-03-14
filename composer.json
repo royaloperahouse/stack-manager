@@ -17,7 +17,6 @@
         "google/apiclient": "1.1.*",
         "php": ">=5.6.0",
         "phpspec/php-diff": "1.0.*",
-        "phpunit/phpunit": "5.2.*",
         "seld/jsonlint": "1.4.*",
         "sensio/buzz-bundle": "1.0.*",
         "sensio/distribution-bundle": "5.0.*",
@@ -28,6 +27,7 @@
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "1.11.*",
+        "phpunit/phpunit": "5.2.*",
         "sebastian/phpcpd": "2.0.*"
     },
     "scripts": {

@@ -12,7 +12,6 @@
 namespace ROH\Bundle\StackManagerBundle\Model;
 
 use Iterator;
-use PHPUnit_Framework_Assert;
 
 /**
  * Immutable model repesenting a stacks tags.
@@ -44,10 +43,7 @@ class Tags implements Iterator
      */
     public function __construct(array $tags)
     {
-        PHPUnit_Framework_Assert::assertLessThanOrEqual(
-            10, count($tags),
-            'Stacks must have no more than ten tags'
-        );
+        assert(count($tags) <= 10, 'Stacks must have no more than ten tags');
 
         ksort($tags);
 
@@ -61,7 +57,7 @@ class Tags implements Iterator
      *
      * @return string[][] Arguments for passing to the CloudFormation API.
      */
-    public function toCloudFormationRequestArgument()
+    public function toCloudFormationRequestArgument(): array
     {
         $argument = [];
         foreach ($this as $key => $value) {
@@ -81,7 +77,7 @@ class Tags implements Iterator
      * @param self $tags
      * @return boolean
      */
-    public function isIdentical(self $tags)
+    public function isIdentical(self $tags): bool
     {
         return (
             // The arrays will both be sorted by key so can be compared using a
@@ -92,17 +88,17 @@ class Tags implements Iterator
 
     /* Iterator methods */
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->tags;
     }
 
-    public function current()
+    public function current(): string
     {
         return $this->tags[$this->key()];
     }
 
-    public function key()
+    public function key(): string
     {
         return $this->keys[$this->position];
     }
@@ -117,7 +113,7 @@ class Tags implements Iterator
         $this->position = 0;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->keys[$this->position]);
     }

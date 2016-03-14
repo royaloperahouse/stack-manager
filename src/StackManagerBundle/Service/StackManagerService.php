@@ -46,7 +46,7 @@ class StackManagerService
      * @param Stack $stack Model of the stack to create.
      * @return string Id of the created stack.
      */
-    public function create(Stack $stack)
+    public function create(Stack $stack): string
     {
         $response = $this->cloudFormationClient->CreateStack([
             'Capabilities' => ['CAPABILITY_IAM'],

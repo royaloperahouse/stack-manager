@@ -34,7 +34,7 @@ class StackComparisonService
     public function compareParameters(
         Parameters $parametersA,
         Parameters $parametersB
-    ) {
+    ): string {
         /*
          * Convert the parameters object to a numerically indexed array of
          * strings representing each of the parameters (name and value).
@@ -68,7 +68,7 @@ class StackComparisonService
      * @return string Rendered unified diff of the changes between the first
      *     and second template models.
      */
-    public function compareTemplate(Template $templateA, Template $templateB)
+    public function compareTemplate(Template $templateA, Template $templateB): string
     {
         // The difference engine expects an array of strings, so get the
         // template bodies as JSON and explode in to separate lines.

@@ -71,7 +71,7 @@ class StackConfigMapper
      *     supplied.
      * @return Stack Model representing the stack.
      */
-    public function create($template, $environment, $scalingProfile, $name = null)
+    public function create(string $template, string $environment, string $scalingProfile, $name = null): Stack
     {
         if (!isset($this->defaultParameters[$template])) {
             throw new InvalidArgumentException(sprintf(

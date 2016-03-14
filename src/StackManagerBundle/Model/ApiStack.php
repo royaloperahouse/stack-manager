@@ -12,7 +12,6 @@
 namespace ROH\Bundle\StackManagerBundle\Model;
 
 use DateTimeImmutable;
-use PHPUnit_Framework_Assert;
 
 /**
  * Immutable model representing a CloudFormation stack that exists or existed in
@@ -51,12 +50,12 @@ class ApiStack extends Stack
     protected $lastUpdatedTime;
 
     public function __construct(
-        $name,
-        $environment,
+        string $name,
+        string $environment,
         Template $template,
         Parameters $parameters,
-        $id,
-        $status,
+        string $id,
+        string $status,
         DateTimeImmutable $creationTime,
         DateTimeImmutable $lastUpdatedTime
     ) {
@@ -71,7 +70,7 @@ class ApiStack extends Stack
     /**
      * @return string
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -79,7 +78,7 @@ class ApiStack extends Stack
     /**
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -87,7 +86,7 @@ class ApiStack extends Stack
     /**
      * @return DateTimeImmutable
      */
-    public function getCreationTime()
+    public function getCreationTime(): DateTimeImmutable
     {
         return $this->creationTime;
     }
@@ -95,7 +94,7 @@ class ApiStack extends Stack
     /**
      * @return DateTimeImmutable
      */
-    public function getLastUpdatedTime()
+    public function getLastUpdatedTime(): DateTimeImmutable
     {
         return $this->lastUpdatedTime;
     }

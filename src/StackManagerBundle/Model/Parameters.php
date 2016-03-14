@@ -50,7 +50,7 @@ class Parameters implements Iterator
      * @param array $response Parameters element of a CloudFormation API response.
      * @return Parameters
      */
-    public static function newFromCloudFormationResponseElement(array $response)
+    public static function newFromCloudFormationResponseElement(array $response): self
     {
         $parameters = [];
         foreach ($response as $parameter) {
@@ -66,7 +66,7 @@ class Parameters implements Iterator
      *
      * @return array Arguments for passing to the CloudFormation API.
      */
-    public function toCloudFormationRequestArgument()
+    public function toCloudFormationRequestArgument(): array
     {
         $argument = [];
         foreach ($this as $key => $value) {
@@ -86,7 +86,7 @@ class Parameters implements Iterator
      * @param self $parameters
      * @return boolean
      */
-    public function isIdentical(self $parameters)
+    public function isIdentical(self $parameters): bool
     {
         return (
             // The arrays will both be sorted by key so can be compared using a
@@ -97,17 +97,17 @@ class Parameters implements Iterator
 
     /* Iterator methods */
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->parameters;
     }
 
-    public function current()
+    public function current(): string
     {
         return $this->parameters[$this->key()];
     }
 
-    public function key()
+    public function key(): string
     {
         return $this->keys[$this->position];
     }
@@ -122,7 +122,7 @@ class Parameters implements Iterator
         $this->position = 0;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->keys[$this->position]);
     }

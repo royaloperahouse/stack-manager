@@ -12,7 +12,6 @@
 namespace ROH\Bundle\StackManagerBundle\Service;
 
 use Aws\S3;
-use PHPUnit_Framework_Assert;
 use ROH\Bundle\StackManagerBundle\Model\Template;
 use Symfony\Component\Serializer;
 use stdClass;
@@ -52,7 +51,7 @@ class TemplateSquashingService
      * @param S3\S3Client $s3Client AWS S3 client
      * @param string $s3BucketName Name of S3 bucket to upload templates to.
      */
-    public function __construct(S3\S3Client $s3Client, $s3BucketName)
+    public function __construct(S3\S3Client $s3Client, string $s3BucketName)
     {
         $this->s3Client = $s3Client;
         $this->s3BucketName = $s3BucketName;
@@ -65,7 +64,7 @@ class TemplateSquashingService
      * @param Template $template Template to squash and upload.
      * @return string URL of uploaded template.
      */
-    public function getSquashedTemplateURL(Template $template)
+    public function getSquashedTemplateURL(Template $template): string
     {
         $body = clone $template->getBody();
         $this->squashTemplate($body);
@@ -115,7 +114,7 @@ class TemplateSquashingService
      * @param stdClass $template Template object to upload
      * @return string URL of template in S3.
      */
-    public function uploadTemplate(stdClass $template)
+    public function uploadTemplate(stdClass $template): string
     {
         $json = (new Serializer\Encoder\JsonEncode)->encode(
             $template,

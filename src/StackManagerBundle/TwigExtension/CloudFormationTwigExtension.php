@@ -41,7 +41,7 @@ class CloudFormationTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('getCloudFormationPhysicalResourceIdByResourceName', [$this, 'getCloudFormationPhysicalResourceIdByResourceName']),
@@ -58,9 +58,9 @@ class CloudFormationTwigExtension extends Twig_Extension
      * @return string Phyiscal resource id.
      */
     public function getCloudFormationPhysicalResourceIdByResourceName(
-        $stackName,
-        $resourceName
-    ) {
+        string $stackName,
+        string $resourceName
+    ): string {
         if (!strlen($stackName)) {
             throw new InvalidArgumentException(sprintf(
                 'Stack name passed to "%s" must be a non-zero length string',
@@ -101,7 +101,7 @@ class CloudFormationTwigExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'roh_cloudformation';
     }
