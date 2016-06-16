@@ -18,6 +18,8 @@ aws:
         secret: %aws_secret_key%
     CloudFormation:
         version: '2010-05-15'
+    CodeDeploy:
+        version: '2014-10-06'
     Ec2:
         version: '2015-10-01'
     Iam:
