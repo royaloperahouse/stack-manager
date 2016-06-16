@@ -121,6 +121,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    roh_stack_manager.twig.codedeploy:
+        class:  ROH\Bundle\StackManagerBundle\TwigExtension\CodeDeployTwigExtension
+        arguments:
+            - @aws.codedeploy
+        tags:
+            - { name: twig.extension }
+
     roh_stack_manager.twig.ebs:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\EbsTwigExtension
         arguments:
