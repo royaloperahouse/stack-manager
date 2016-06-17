@@ -42,6 +42,7 @@ class CodeDeployTwigExtension extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction('getLatestCodeDeployApplicationRevision', [$this, 'getLatestCodeDeployApplicationRevision']),
+            new Twig_SimpleFunction('getLatestCodeDeployDeploymentGroupRevision', [$this, 'getLatestCodeDeployDeploymentGroupRevision']),
         ];
     }
 
@@ -58,8 +59,46 @@ class CodeDeployTwigExtension extends Twig_Extension
         $response = $this->codeDeployClient->ListApplicationRevisions([
             'applicationName' => $applicationName
         ]);
+        $revision = end($response['revisions']);
 
-        return json_encode($this->getLatestApplicationRevisionFromResponse($response));
+        return $this->convertCodeDeployRevisionToCloudFormationRevision($revision);
+    }
+
+
+    /**
+     * Get information about the latest CodeDeploy revision of the specified
+     * deployment group.
+     *
+     * @param string $applicationName Name of application used by the deployment
+     *     group.
+     * @param string $deploymentGroup Name of deployment group to get the latest
+     *     revision of.
+     * @return string JSON representation of the latest deployment group
+     *     revision.
+     */
+    public function getLatestCodeDeployDeploymentGroupRevision($applicationName, $deploymentGroupName)
+    {
+        try {
+            $response = $this->codeDeployClient->GetDeploymentGroup([
+                'applicationName' => $applicationName,
+                'deploymentGroupName' => $deploymentGroupName,
+            ]);
+        } catch (CodeDeploy\Exception\CodeDeployException $e) {
+            $error = json_decode($e->getResponse()->getBody(), true);
+            if ($error['__type'] === 'DeploymentGroupDoesNotExistException') {
+                return null;
+            }
+
+            throw $e;
+        }
+
+        if (!$response) {
+            return null;
+        }
+
+        $revision = $response['deploymentGroupInfo']['targetRevision'];
+
+        return $this->convertCodeDeployRevisionToCloudFormationRevision($revision);
     }
 
     /**
@@ -70,10 +109,8 @@ class CodeDeployTwigExtension extends Twig_Extension
         return 'roh_codedeploy';
     }
 
-    private function getLatestApplicationRevisionFromResponse(Aws\Result $response)
+    private function convertCodeDeployRevisionToCloudFormationRevision(array $revision)
     {
-        $revision = end($response['revisions']);
-
         /**
          * CodeDeploy returns it keys with a lower case first letter, but
          * CloudFormation expects them with an upper case first letter (like
@@ -90,6 +127,6 @@ class CodeDeployTwigExtension extends Twig_Extension
             return $filtered;
         };
 
-        return $ucfirstArray($revision);
+        return json_encode($ucfirstArray($revision));
     }
 }
