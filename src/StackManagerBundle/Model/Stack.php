@@ -135,7 +135,7 @@ class Stack
      */
     public function isChildStack()
     {
-        return preg_match('#-[A-Z0-9]{12,13}$#', $this->getName());
+        return preg_match('#-[A-Z0-9]{11,13}$#', $this->getName());
     }
 
     /**
