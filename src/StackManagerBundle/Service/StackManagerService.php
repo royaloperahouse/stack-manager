@@ -48,14 +48,19 @@ class StackManagerService
      */
     public function create(Stack $stack)
     {
-        $response = $this->cloudFormationClient->CreateStack([
+        $parameters = [
             'Capabilities' => ['CAPABILITY_IAM'],
             'OnFailure' => 'DO_NOTHING',
-            'Parameters' => $stack->getParameters()->toCloudFormationRequestArgument(),
             'StackName' => $stack->getName(),
             'TemplateURL' => $this->templateSquashingService->getSquashedTemplateURL($stack->getTemplate()),
-            'Tags' => $stack->getTags()->toCloudFormationRequestArgument(),
-        ]);
+            'Tags' => $stack->getTags()->toCloudFormationRequestArgument()
+        ];
+
+        if (count($stack->getParameters())) {
+            $parameters['Parameters'] = $stack->getParameters()->toCloudFormationRequestArgument();
+        }
+
+        $response = $this->cloudFormationClient->CreateStack($parameters);
 
         return $response['StackId'];
     }
@@ -68,12 +73,17 @@ class StackManagerService
      */
     public function update(Stack $stack)
     {
-        $response = $this->cloudFormationClient->UpdateStack([
+        $parameters = [
             'Capabilities' => ['CAPABILITY_IAM'],
             'StackName' => $stack->getName(),
-            'Parameters' => $stack->getParameters()->toCloudFormationRequestArgument(),
             'TemplateURL' => $this->templateSquashingService->getSquashedTemplateURL($stack->getTemplate()),
-        ]);
+        ];
+
+        if (count($stack->getParameters())) {
+            $parameters['Parameters'] = $stack->getParameters()->toCloudFormationRequestArgument();
+        }
+
+        $response = $this->cloudFormationClient->UpdateStack($parameters);
     }
 
     /**

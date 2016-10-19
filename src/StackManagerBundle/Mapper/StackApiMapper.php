@@ -104,10 +104,6 @@ class StackApiMapper
             'Stack portion of CloudFormation API response must contain a "StackStatus" key'
         );
         PHPUnit_Framework_Assert::assertArrayHasKey(
-            'Parameters', $response,
-            'Stack portion of CloudFormation API response must contain a "Parameters" key'
-        );
-        PHPUnit_Framework_Assert::assertArrayHasKey(
             'Tags', $response,
             'Stack portion of CloudFormation API response must contain a "Tags" key'
         );
@@ -160,6 +156,10 @@ class StackApiMapper
         // for our purposes it is equivalent to the CreationTime in such case.
         if (!isset($response['LastUpdatedTime'])) {
             $response['LastUpdatedTime'] = $response['CreationTime'];
+        }
+
+        if (!isset($response['Parameters'])) {
+            $response['Parameters'] = [];
         }
 
         return new ApiStack(
