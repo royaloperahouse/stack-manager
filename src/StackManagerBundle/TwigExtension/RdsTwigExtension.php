@@ -74,10 +74,18 @@ class RdsTwigExtension extends Twig_Extension
         }
 
         $response = $this->rdsClient->describeDBSnapshots([
-            'DBInstanceIdentifier' => $instanceIdentifier,
+            'IncludeShared' => true,
         ]);
 
-        return $this->getLatestRdsSnapshotFromResponse($response);
+        $matchedResponse = clone $response;
+        $matchedResponse['DBSnapshots'] = [];
+        foreach ($response['DBSnapshots'] as &$snapshot) {
+            if ($snapshot['DBInstanceIdentifier'] === $instanceIdentifier) {
+                $matchedResponse['DBSnapshots'][] = $snapshot;
+            }
+        }
+
+        return $this->getLatestRdsSnapshotFromResponse($matchedResponse);
     }
 
     /**
