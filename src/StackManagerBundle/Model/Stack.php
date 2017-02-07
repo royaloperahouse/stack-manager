@@ -21,6 +21,11 @@ use PHPUnit_Framework_Assert;
 class Stack
 {
     /**
+     * Tag to use in CloudFormation for the root stack name.
+     */
+    const ROOT_STACK_NAME_TAG = 'roh:stack-manager:root-stack-name';
+
+    /**
      * Tag to use in CloudFormation for the stack environment name.
      */
     const ENVIRONMENT_TAG = 'roh:stack-manager:environment';
@@ -123,6 +128,7 @@ class Stack
         return new Tags([
             self::ENVIRONMENT_TAG => $this->getEnvironment(),
             self::TEMPLATE_TAG => $this->getTemplate()->getName(),
+            self::ROOT_STACK_NAME_TAG => $this->getName(),
         ]);
     }
 
