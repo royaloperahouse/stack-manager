@@ -77,6 +77,7 @@ class StackManagerService
             'Capabilities' => ['CAPABILITY_IAM'],
             'StackName' => $stack->getName(),
             'TemplateURL' => $this->templateSquashingService->getSquashedTemplateURL($stack->getTemplate()),
+            'Tags' => $stack->getTags()->toCloudFormationRequestArgument()
         ];
 
         if (count($stack->getParameters())) {
