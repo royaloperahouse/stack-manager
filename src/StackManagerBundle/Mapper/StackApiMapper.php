@@ -146,6 +146,7 @@ class StackApiMapper
             $cloudFormationClient
         ) {
             return $templateExpansionService->getExpandedTemplateBody(
+                $name,
                 $cloudFormationClient->GetTemplate([
                     'StackName' => $name,
                 ])['TemplateBody']

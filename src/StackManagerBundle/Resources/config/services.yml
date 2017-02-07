@@ -108,6 +108,7 @@ services:
         class: ROH\Bundle\StackManagerBundle\Service\TemplateExpansionService
         arguments:
             - @buzz
+            - @aws.cloudformation
 
     roh_stack_manager.twig.cidr:
         class:  ROH\Bundle\StackManagerBundle\TwigExtension\CidrTwigExtension

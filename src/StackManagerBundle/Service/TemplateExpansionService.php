@@ -11,6 +11,7 @@
 
 namespace ROH\Bundle\StackManagerBundle\Service;
 
+use Aws\CloudFormation;
 use Buzz;
 use Symfony\Component\Serializer;
 use stdClass;
@@ -33,9 +34,17 @@ class TemplateExpansionService
      */
     protected $browser;
 
-    public function __construct(Buzz\Browser $browser)
-    {
+    /**
+     * @var CloudFormation\CloudFormationClient
+     */
+    protected $cloudFormationClient;
+
+    public function __construct(
+        Buzz\Browser $browser,
+        CloudFormation\CloudFormationClient $cloudFormationClient
+    ) {
         $this->browser = $browser;
+        $this->cloudFormationClient = $cloudFormationClient;
     }
 
     /**
@@ -44,13 +53,13 @@ class TemplateExpansionService
      * @param string $body JSON-encoded template body to expand.
      * @return string Expanded template body.
      */
-    public function getExpandedTemplateBody($body)
+    public function getExpandedTemplateBody($stackName, $body)
     {
         $body = (new Serializer\Encoder\JsonDecode)->decode(
             $body,
             Serializer\Encoder\JsonEncoder::FORMAT
         );
-        $this->expandTemplate($body);
+        $this->expandTemplate($stackName, $body);
 
         return $body;
     }
@@ -60,48 +69,33 @@ class TemplateExpansionService
      *
      * @param stdClass $template Object representing the template.
      */
-    public function expandTemplate(stdClass $template)
+    protected function expandTemplate($stackName, stdClass $template)
     {
         if (!isset($template->Resources)) {
             return;
         }
 
-        foreach ($template->Resources as $name => $data) {
+        foreach ($template->Resources as $logicalResourceId => $data) {
             if ($data->Type !== self::SUB_STACK_RESOURCE_TYPE) {
                 continue;
             }
 
-            if (!isset($data->Properties)) {
-                continue;
-            }
+            $physicalResourceId = $this->cloudFormationClient->describeStackResource([
+                'StackName' => $stackName,
+                'LogicalResourceId' => $logicalResourceId,
+            ])['StackResourceDetail']['PhysicalResourceId'];
 
-            if (!isset($data->Properties->TemplateURL)) {
-                continue;
-            }
+            $templateBody = $this->cloudFormationClient->getTemplate([
+                'StackName' => $physicalResourceId,
+            ])['TemplateBody'];
 
-            $data->Properties->TemplateBody = $this->downloadTemplate(
-                $data->Properties->TemplateURL
+            $data->Properties->TemplateBody = (new Serializer\Encoder\JsonDecode)->decode(
+                $templateBody,
+                Serializer\Encoder\JsonEncoder::FORMAT
             );
             unset($data->Properties->TemplateURL);
 
-            $this->expandTemplate($data->Properties->TemplateBody);
+            $this->expandTemplate($physicalResourceId, $data->Properties->TemplateBody);
         }
-    }
-
-    /**
-     * Download the template with the specified URL.
-     *
-     * @param string $url URL of template to download.
-     * @return string Template body.
-     */
-    public function downloadTemplate($url)
-    {
-        $json = $this->browser->get($url)->getContent();
-        $template = (new Serializer\Encoder\JsonDecode)->decode(
-            $json,
-            Serializer\Encoder\JsonEncoder::FORMAT
-        );
-
-        return $template;
     }
 }
