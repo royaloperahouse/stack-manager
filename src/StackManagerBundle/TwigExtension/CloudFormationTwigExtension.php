@@ -83,7 +83,7 @@ class CloudFormationTwigExtension extends Twig_Extension
             if (preg_match('#Stack \'.*?\' does not exist#', $e->getMessage())) {
                 return null;
             }
-            throw new $e;
+            throw $e;
         }
 
         if (!isset($response['StackResourceDetail'])) {
